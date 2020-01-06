@@ -1,0 +1,156 @@
+{
+    "TopicPrefix": "$(hostname)/sensor",
+    "Historian": {
+        "Npgsql": {
+            "Enable": false,
+            "ConnectionString": "Server=localhost;Port=5432;Database=;User Id=;Password=",
+            "CpuTemperature": {
+                "InsertQuery": "INSERT INTO measuring.cpu_temperature_measurement (ts, alias, cpu, hostname, temperature) VALUES (:Timestamp, :Alias, :Cpu, :Hostname, :Temperature)"
+            },
+            "HddTemperature": {
+                "InsertQuery": "INSERT INTO measuring.hdd_temperature_measurement (ts, alias, hdd, hostname, temperature) VALUES (:Timestamp, :Alias, :Hdd, :Hostname, :Temperature)"
+            },
+            "HddUsage": {
+                "InsertQuery": "INSERT INTO measuring.hdd_usage_measurement (ts, alias, hdd, hostname, available, used, total) VALUES (:Timestamp, :Alias, :Hdd, :Hostname, :Available, :Used, :Total)"
+            },
+            "Load": {
+                "InsertQuery": "INSERT INTO measuring.load_measurement (ts, hostname, last_1_minute, last_5_minutes, last_15_minutes) VALUES (:Timestamp, :Hostname, :LastOneMinute, :LastFiveMinutes, :LastFifteenMinutes)"
+            },
+            "Ping": {
+                "InsertQuery": "INSERT INTO measuring.ping_measurement (ts, source, target, alias, status, status_as_text, timeout_seconds, rtt_seconds) VALUES (:Timestamp, :Source, :Target, :Alias, :Status, :StatusAsText, :Timeout, :RoundtripTime)"
+            },
+            "TcpPortState": {
+                "InsertQuery": "INSERT INTO measuring.tcp_port_state_measurement (ts, source, target, port, alias, status, status_as_text, timeout_seconds, after_seconds) VALUES (:Timestamp, :Source, :Target, :Port, :Alias, :Status, :StatusAsText, :Timeout, :After)"
+            },
+            "NsResolve": {
+                "InsertQuery": "INSERT INTO measuring.ns_resolve_measurement (ts, source, target, alias, status, status_as_text, timeout_seconds, after_seconds) VALUES (:Timestamp, :Source, :Target, :Alias, :Status, :StatusAsText, :Timeout, :After)"
+            },
+            "Dht22": {
+                "InsertQuery": "INSERT INTO measuring.dht22_measurement (ts, alias, hostname, is_last_read_successful, last_read_age, last_relative_humidity, last_temperature) VALUES (:Timestamp, :Alias, :Hostname, :IsLastReadSuccessful, :LastReadAge, :LastRelativeHumidity, :LastTemperature)"
+            }
+        }
+    },
+    "Measurements": {
+        "Qos": "AtMostOnce"
+    },
+    "Mqtt": {
+        "Host": "localhost",
+        "Port": 1883,
+        "Session": {
+            "ClientId": "",
+            "Clean": false
+        },
+        "Ssl": {
+            "Enable": false,
+            "AllowUntrustedCertificates": false
+        },
+        "Auth": {
+            "Enable": false,
+            "Username": "",
+            "Password": ""
+        }
+    },
+    "Sensor": {
+        "CpuTemperature": {
+            "Items": [
+                /*
+                {
+                    "Path": "/sys/class/thermal/thermal_zone0/temp",
+                    "Alias": "cpu-0",
+                    "Enable": false,
+                    "ScanRate": "00:00:05.000"
+                }
+                */
+            ]
+        },
+        "Dht22": {
+            "Items": [
+                /*
+                {
+                    "Alias": "ambient",
+                    "Enable": false,
+                    "GpioPin": 3,
+                    "ScanRate": "00:01:00.000"
+                }
+                */
+            ]
+        },
+        "HddTemperature": {
+            "ScanRate": "00:00:10.000",
+            "Items": [
+                /*
+                {
+                    "Path": "/dev/sda",
+                    "Alias": "sda",
+                    "Enable": false,
+                    "ScanRate": "00:00:10"
+                }
+                */
+            ]
+        },
+        "HddUsage": {
+            "ScanRate": "00:00:10.000",
+            "Items": [
+                /*
+                {
+                    "Path": "/dev/sda",
+                    "Alias": "sda",
+                    "Enable": false
+                }
+                */
+            ]
+        },
+        "Heartbeat": {
+            "Enable": true,
+            "ScanRate": "00:00:01.000"
+        },
+        "Load": {
+            "Enable": false,
+            "ScanRate": "00:00:01.000"
+        },
+        "NsResolve": {
+            "Items": [
+                /*
+                {
+                    "Hostname": "github.com",
+                    "Alias": "github.com",
+                    "Timeout": "00:00:01.000",
+                    "Enable": false,
+                    "ScanRate": "00:00:05.000"
+                }
+                */
+            ]
+        },
+        "Ping": {
+            "Items": [
+                /*
+                {
+                    "Hostname": "localhost",
+                    "Alias": "localhost",
+                    "Timeout": "00:00:01.000",
+                    "Enable": false,
+                    "ScanRate": "00:00:01.000"
+                }
+                */
+            ]
+        },
+        "TcpPortState": {
+            "Items": [
+                /*
+                {
+                    "Hostname": "localhost",
+                    "Port": 5432,
+                    "Alias": "example",
+                    "Timeout": "00:00:01.000",
+                    "Enable": false,
+                    "ScanRate": "00:00:10"
+                }
+                */
+            ]
+        },
+        "Uptime": {
+            "Enable": false,
+            "ScanRate": "00:01:00"
+        }
+    }
+}

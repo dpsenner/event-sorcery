@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>EventSorcery.EventSorcerer</RootNamespace>
+    <AssemblyName>EventSorcerer</AssemblyName>
+    <Authors>dpsenner@gmail.com</Authors>
+    <Product>Event Sorcery</Product>
+    <Copyright>2019</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/dpsenner/event-sorcery</PackageProjectUrl>
+    <StartupObject>EventSorcery.EventSorcerer.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Components.Measuring\Components.Measuring.csproj" />
+    <ProjectReference Include="..\Components.Historian\Components.Historian.csproj" />
+    <ProjectReference Include="..\Events.Application\Events.Application.csproj" />
+    <ProjectReference Include="..\Events.Measuring\Events.Measuring.csproj" />
+    <ProjectReference Include="..\Events.Mqtt\Events.Mqtt.csproj" />
+    <ProjectReference Include="..\Infrastructure.Configuration\Infrastructure.Configuration.csproj" />
+    <ProjectReference Include="..\Infrastructure.DependencyInjection\Infrastructure.DependencyInjection.csproj" />
+    <ProjectReference Include="..\Infrastructure.Mqtt\Infrastructure.Mqtt.csproj" />
+  </ItemGroup>
+
+</Project>

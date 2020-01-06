@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "mqtt-publish-sensors": {
+      "commandName": "Project",
+      "workingDirectory": "../../../src/deploy/"
+    }
+  }
+}

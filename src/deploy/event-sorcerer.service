@@ -1,0 +1,13 @@
+[Unit]
+Description=Event Sorcerer Service
+After=network.target
+
+[Service]
+WorkingDirectory=/etc/event-sorcerer
+ExecStart=/usr/local/bin/event-sorcerer
+KillSignal=SIGINT
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=event-sorcerer.service
