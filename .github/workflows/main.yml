@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  build-portable:
+  build:
 
     runs-on: ubuntu-latest
     strategy:
@@ -17,5 +17,5 @@ jobs:
     - uses: actions/checkout@master
       with:
         fetch-depth: 1
-    - name: Run Makefile to build portable binaries
-      run: make build-portable
+    - name: Run Makefile to build project artifacts
+      run: make build
