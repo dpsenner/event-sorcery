@@ -40,9 +40,24 @@ make build
 
 ## Installation
 
-The application includes installation
+The application includes installation automation tools that can be used after building:
 
-`make install`
+```sh
+make build
+cd build/deploy
+make install ARCH=linux-x64
+```
+
+## Start and stop after installation
+
+When installed as a systemd service `event-sorcerer`, interaction is as easy as:
+
+```sh
+systemctl status event-sorcer
+systemctl stop event-sorcer
+systemctl start event-sorcer
+systemctl restart event-sorcer
+```
 
 ### Remote deploy
 
