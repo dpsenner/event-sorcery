@@ -22,5 +22,5 @@ jobs:
       run: make build-deploy build-linux-x64
     - uses: actions/upload-artifact@v1
       with:
-        name: artifacts
+        name: event-sorcerer
         path: build
