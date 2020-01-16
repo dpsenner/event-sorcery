@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace EventSorcery.Events.Measuring.Measurements
 {

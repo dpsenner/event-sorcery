@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EventSorcery.Infrastructure.Mqtt.Internals
+﻿namespace EventSorcery.Infrastructure.Mqtt.Internals
 {
     internal class MqttBrokerConfiguration
     {

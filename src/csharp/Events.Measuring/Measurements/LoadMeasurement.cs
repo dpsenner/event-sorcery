@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace EventSorcery.Events.Measuring.Measurements
 {
@@ -8,7 +7,7 @@ namespace EventSorcery.Events.Measuring.Measurements
         public DateTime Timestamp { get; set; }
 
         public string Hostname { get; set; }
-        
+
         public double LastOneMinute { get; set; }
 
         public double LastFiveMinutes { get; set; }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace EventSorcery.Events.Measuring.Measurements
 {
@@ -14,7 +13,7 @@ namespace EventSorcery.Events.Measuring.Measurements
         public int Port { get; set; }
 
         public string Alias { get; set; }
-        
+
         public TcpPortStatus Status { get; set; }
 
         public TimeSpan After { get; set; }

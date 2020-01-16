@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace EventSorcery.Infrastructure.Configuration
 {
@@ -40,7 +38,7 @@ namespace EventSorcery.Infrastructure.Configuration
         public static IServiceCollection AddConfigurationBinding<T>(this IServiceCollection serviceCollection, params string[] sectionKeys)
             where T : class, new()
         {
-            return serviceCollection.AddConfigurationBinding<T>((serviceProvider, t) => {}, sectionKeys);
+            return serviceCollection.AddConfigurationBinding<T>((serviceProvider, t) => { }, sectionKeys);
         }
 
         public static IServiceCollection AddConfigurationBinding<T>(this IServiceCollection serviceCollection, Action<IServiceProvider, T> configure, params string[] sectionKeys)
@@ -95,15 +93,15 @@ namespace EventSorcery.Infrastructure.Configuration
             return builder;
         }
 
-	private static IConfigurationBuilder AddJsonFile(this IConfigurationBuilder builder, string path, IServiceProvider serviceProvider)
-	{
-		if (!File.Exists(path))
-		{
-			return builder;
-		}
+        private static IConfigurationBuilder AddJsonFile(this IConfigurationBuilder builder, string path, IServiceProvider serviceProvider)
+        {
+            if (!File.Exists(path))
+            {
+                return builder;
+            }
 
-		Console.WriteLine($"Loading configuration from file: {path}");
-		return builder.AddJsonFile(path, false);
-	}
+            Console.WriteLine($"Loading configuration from file: {path}");
+            return builder.AddJsonFile(path, false);
+        }
     }
 }

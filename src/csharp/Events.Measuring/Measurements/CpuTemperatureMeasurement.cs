@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace EventSorcery.Events.Measuring.Measurements
 {
@@ -12,7 +11,7 @@ namespace EventSorcery.Events.Measuring.Measurements
         public string Cpu { get; set; }
 
         public string Alias { get; set; }
-        
+
         public double Temperature { get; set; }
     }
 }

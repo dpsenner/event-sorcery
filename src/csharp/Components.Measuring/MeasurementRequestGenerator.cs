@@ -146,7 +146,7 @@ namespace EventSorcery.Components.Measuring
             {
                 throw new InvalidOperationException("Sensor configuration item has not been registered earlier");
             }
-            
+
             LastMeasurement[item].Restart();
         }
 

@@ -11,7 +11,6 @@ using MQTTnet.Formatter;
 using System;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -211,7 +210,7 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
                     parameters.AllowUntrustedCertificates = Configuration.Ssl.AllowUntrustedCertificates;
                 });
             }
-            
+
             return builder.Build();
         }
 
@@ -251,7 +250,7 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
                 {
                     return 0;
                 }
-                
+
                 if (typeof(System.Collections.IEnumerable).IsAssignableFrom(property.PropertyType))
                 {
                     return 1;

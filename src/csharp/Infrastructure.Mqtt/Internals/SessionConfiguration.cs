@@ -1,6 +1,6 @@
 namespace EventSorcery.Infrastructure.Mqtt.Internals
 {
-    internal class SessionConfiguration 
+    internal class SessionConfiguration
     {
         public string ClientId { get; set; } = string.Empty;
 

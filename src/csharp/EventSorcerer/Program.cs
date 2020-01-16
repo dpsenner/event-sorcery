@@ -34,13 +34,13 @@ namespace EventSorcery.EventSorcerer
                 {
                     configurationPath = configurationPathOption.Value();
                 }
-                
+
                 bool? cleanSession = null;
                 if (cleanSessionOption.HasValue())
                 {
                     cleanSession = true;
                 }
-                
+
                 return ApplicationMain(configurationPath, cleanSession, arguments);
             });
 

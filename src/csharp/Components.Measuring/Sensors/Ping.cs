@@ -51,7 +51,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                     {
                         alias = hostname;
                     }
-                    
+
                     var pingReply = await ping.SendPingAsync(hostname, timeout);
                     var roundtripTime = TimeSpan.FromMilliseconds(pingReply.RoundtripTime);
                     if (pingReply.Status == IPStatus.TimedOut)

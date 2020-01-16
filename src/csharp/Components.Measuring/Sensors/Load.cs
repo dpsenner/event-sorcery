@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -9,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventSorcery.Events.Measuring;
 using EventSorcery.Events.Measuring.Measurements;
-using EventSorcery.Infrastructure.DependencyInjection;
 
 namespace EventSorcery.Components.Measuring.Sensors
 {
@@ -68,7 +66,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                     }
                     break;
                 case PlatformID.Win32NT:
-                    // not supported
+                // not supported
                 default:
                     // not implemented
                     return;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EventSorcery.Infrastructure.Configuration.Internals
+﻿namespace EventSorcery.Infrastructure.Configuration.Internals
 {
     internal class ConfigurationPathProvider : IConfigurationPathProvider
     {

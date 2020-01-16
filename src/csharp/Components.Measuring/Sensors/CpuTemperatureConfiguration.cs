@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace EventSorcery.Components.Measuring.Sensors
 {
@@ -15,7 +14,7 @@ namespace EventSorcery.Components.Measuring.Sensors
             public bool Enable { get; set; } = false;
 
             public string Path { get; set; } = string.Empty;
-            
+
             public TimeSpan ScanRate { get; set; } = TimeSpan.FromSeconds(5);
         }
     }

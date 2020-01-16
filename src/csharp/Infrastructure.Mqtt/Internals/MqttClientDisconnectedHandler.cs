@@ -3,8 +3,6 @@ using EventSorcery.Infrastructure.DependencyInjection;
 using MediatR;
 using MQTTnet.Client.Disconnecting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EventSorcery.Infrastructure.Mqtt.Internals

@@ -4,8 +4,6 @@ using MediatR;
 using MQTTnet;
 using MQTTnet.Client.Receiving;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EventSorcery.Infrastructure.Mqtt.Internals

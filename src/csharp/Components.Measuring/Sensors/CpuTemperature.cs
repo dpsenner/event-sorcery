@@ -1,5 +1,4 @@
-﻿using EventSorcery.Infrastructure.DependencyInjection;
-using MediatR;
+﻿using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

@@ -3,13 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using EventSorcery.Infrastructure.DependencyInjection;
 using EventSorcery.Events.Measuring;
 using EventSorcery.Events.Measuring.Measurements;
 
@@ -114,7 +112,7 @@ namespace EventSorcery.Components.Measuring.Sensors
 
         private static string GetBytesHumanReadable(long bytes)
         {
-            var units = new string[]{ "B", "KiB", "MiB", "GiB", "TiB" };
+            var units = new string[] { "B", "KiB", "MiB", "GiB", "TiB" };
             int idx = 0;
             while (idx < units.Length)
             {
@@ -138,7 +136,7 @@ namespace EventSorcery.Components.Measuring.Sensors
             using (var process = Process.Start(new ProcessStartInfo()
             {
                 FileName = "df",
-                Arguments ="-B1",
+                Arguments = "-B1",
                 StandardOutputEncoding = Encoding.UTF8,
                 RedirectStandardOutput = true,
                 UseShellExecute = false,

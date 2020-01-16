@@ -3,16 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Device.Gpio;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EventSorcery.Events.Application;
 using EventSorcery.Events.Measuring;
 using EventSorcery.Events.Measuring.Measurements;
-using EventSorcery.Infrastructure.DependencyInjection;
 
 namespace EventSorcery.Components.Measuring.Sensors
 {
@@ -190,7 +185,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                     DelayExactly(TimeSpan.FromSeconds(1), true);
                     //Console.WriteLine($"Opened gpio pin {_pin} ..");
                 }
-                
+
                 var oneMicrosecond = TimeSpan.FromMilliseconds(0.001);
 
                 // change pin mode to output
@@ -232,7 +227,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                     var pinValue = Read();
                     if (_register.Count > 0)
                     {
-                        if (_register[_register.Count-1].Item1 != pinValue)
+                        if (_register[_register.Count - 1].Item1 != pinValue)
                         {
                             _register.Add((pinValue, elapsed));
                         }
@@ -246,10 +241,10 @@ namespace EventSorcery.Components.Measuring.Sensors
                 // filter every captured flank to only contain the falling flanks
                 // and the time we observed it
                 List<TimeSpan> fallingFlanks = new List<TimeSpan>();
-                for (int i=0; i < _register.Count-1; i++)
+                for (int i = 0; i < _register.Count - 1; i++)
                 {
                     var item = _register[i];
-                    var next = _register[i+1];
+                    var next = _register[i + 1];
                     if (item.Item1 == PinEventTypes.Rising && next.Item1 == PinEventTypes.Falling)
                     {
                         var elapsed = next.Item2 - item.Item2;
@@ -294,7 +289,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                     IsLastReadSuccessful = false;
                     return;
                 }
-                
+
                 // verify data was actually read
                 if (_readBuff.Select(t => (int)t).Sum() == 0)
                 {
@@ -384,13 +379,13 @@ namespace EventSorcery.Components.Measuring.Sensors
 
                 return PinEventTypes.None;
             }
-            
+
             private static double GetHumidity(byte[] readBuff)
             {
                 var value = ((readBuff[0] << 8) + readBuff[1]) * 0.1;
                 return Math.Round(value, 1);
             }
-            
+
             private static double GetTemperature(byte[] readBuff)
             {
                 var temp = (((readBuff[2] & 0x7F) << 8) + readBuff[3]) * 0.1;
@@ -403,7 +398,7 @@ namespace EventSorcery.Components.Measuring.Sensors
 
                 return Math.Round(temp, 1);
             }
-            
+
             private void DelayExactly(TimeSpan delay, bool allowThreadYield)
             {
                 _stopwatch.Restart();

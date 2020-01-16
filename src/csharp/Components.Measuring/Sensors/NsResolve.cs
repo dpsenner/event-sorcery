@@ -54,7 +54,7 @@ namespace EventSorcery.Components.Measuring.Sensors
             {
                 alias = hostname;
             }
-            
+
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             var asyncResult = Dns.BeginGetHostEntry(hostname, null, null);
             var status = NsResolveStatus.Failure;

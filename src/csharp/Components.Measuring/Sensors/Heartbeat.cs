@@ -1,14 +1,9 @@
 ﻿using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EventSorcery.Events.Measuring;
 using EventSorcery.Events.Measuring.Measurements;
-using EventSorcery.Events.Mqtt;
-using EventSorcery.Infrastructure.DependencyInjection;
 
 namespace EventSorcery.Components.Measuring.Sensors
 {

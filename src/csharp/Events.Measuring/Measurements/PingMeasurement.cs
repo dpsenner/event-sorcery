@@ -12,7 +12,7 @@ namespace EventSorcery.Events.Measuring.Measurements
         public string Target { get; set; }
 
         public string Alias { get; set; }
-        
+
         public IPStatus Status { get; set; }
 
         public TimeSpan RoundtripTime { get; set; }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EventSorcery.Events.Mqtt
+﻿namespace EventSorcery.Events.Mqtt
 {
     public enum QualityOfService
     {

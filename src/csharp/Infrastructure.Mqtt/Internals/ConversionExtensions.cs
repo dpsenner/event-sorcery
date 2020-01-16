@@ -1,8 +1,6 @@
 ﻿using EventSorcery.Events.Mqtt;
 using MQTTnet.Protocol;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EventSorcery.Infrastructure.Mqtt.Internals
 {

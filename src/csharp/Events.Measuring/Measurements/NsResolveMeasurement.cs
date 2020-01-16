@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.NetworkInformation;
 
 namespace EventSorcery.Events.Measuring.Measurements
 {
@@ -12,7 +11,7 @@ namespace EventSorcery.Events.Measuring.Measurements
         public string Target { get; set; }
 
         public string Alias { get; set; }
-        
+
         public NsResolveStatus Status { get; set; }
 
         public TimeSpan After { get; set; }
