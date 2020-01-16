@@ -19,7 +19,7 @@ jobs:
         fetch-depth: 0
         ref: ${{ github.ref }}
     - name: Run Makefile to build project artifacts
-      run: make build-linux-x64
+      run: make build-deploy build-linux-x64
     - uses: actions/upload-artifact@v1
       with:
         name: artifacts
