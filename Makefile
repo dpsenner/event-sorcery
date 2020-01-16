@@ -1,6 +1,7 @@
 OUTPUT_DIR=build
 CSPROJ_FILE=src/csharp/EventSorcerer/EventSorcerer.csproj
 CONFIGURATION_PATH=src/deploy
+DOTNET_PUBLISH_COMMAND=dotnet publish -maxcpucount:1 --configuration Release
 
 .DEFAULT_GOAL := build
 run:
@@ -23,20 +24,20 @@ build-deploy:
 build-portable:
 	# build-portable
 	test ! -f $(OUTPUT_DIR)/portable || rm -rf $(OUTPUT_DIR)/portable
-	dotnet publish --configuration Release --output $(OUTPUT_DIR)/portable $(CSPROJ_FILE)
+	$(DOTNET_PUBLISH_COMMAND) --output $(OUTPUT_DIR)/portable $(CSPROJ_FILE)
 	chmod -R -x,+X $(OUTPUT_DIR)/portable/*
 	cp src/deploy/event-sorcerer.sh $(OUTPUT_DIR)/portable/EventSorcerer
 	chmod +x $(OUTPUT_DIR)/portable/EventSorcerer
 build-linux-x64:
 	# build-linux-x64
 	test ! -f $(OUTPUT_DIR)/linux-x64 || rm -rf $(OUTPUT_DIR)/linux-x64
-	dotnet publish --configuration Release --self-contained --runtime linux-x64 --output $(OUTPUT_DIR)/linux-x64 $(CSPROJ_FILE)
+	$(DOTNET_PUBLISH_COMMAND) --self-contained --runtime linux-x64 --output $(OUTPUT_DIR)/linux-x64 $(CSPROJ_FILE)
 	chmod -R -x,+X $(OUTPUT_DIR)/linux-x64/*
 	chmod +x $(OUTPUT_DIR)/linux-x64/EventSorcerer
 build-linux-arm:
 	# build-linux-arm
 	test ! -f $(OUTPUT_DIR)/linux-arm || rm -rf $(OUTPUT_DIR)/linux-arm
-	dotnet publish --configuration Release --self-contained --runtime linux-arm --output $(OUTPUT_DIR)/linux-arm $(CSPROJ_FILE)
+	$(DOTNET_PUBLISH_COMMAND) --self-contained --runtime linux-arm --output $(OUTPUT_DIR)/linux-arm $(CSPROJ_FILE)
 	chmod -R -x,+X $(OUTPUT_DIR)/linux-arm/*
 	chmod +x $(OUTPUT_DIR)/linux-arm/EventSorcerer
 
