@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Components.Npgsql", "Compon
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Components.Measuring", "Components.Measuring\Components.Measuring.csproj", "{06933F04-31A6-48C9-A9C6-1156CBDA4CF9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Components.Historian", "Components.Historian\Components.Historian.csproj", "{30A11FCB-903D-4E8E-823A-48EF6DA37ACB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{06933F04-31A6-48C9-A9C6-1156CBDA4CF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06933F04-31A6-48C9-A9C6-1156CBDA4CF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06933F04-31A6-48C9-A9C6-1156CBDA4CF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30A11FCB-903D-4E8E-823A-48EF6DA37ACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30A11FCB-903D-4E8E-823A-48EF6DA37ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30A11FCB-903D-4E8E-823A-48EF6DA37ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30A11FCB-903D-4E8E-823A-48EF6DA37ACB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
