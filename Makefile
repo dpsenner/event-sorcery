@@ -2,6 +2,7 @@ OUTPUT_DIR=build
 CSPROJ_FILE=src/csharp/EventSorcerer/EventSorcerer.csproj
 CONFIGURATION_PATH=src/deploy
 
+.DEFAULT_GOAL := build
 run:
 	# run
 	-dotnet run --project $(CSPROJ_FILE) -- -c $(CONFIGURATION_PATH)
