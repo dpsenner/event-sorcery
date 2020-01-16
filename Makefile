@@ -1,7 +1,8 @@
 OUTPUT_DIR=build
 CSPROJ_FILE=src/csharp/EventSorcerer/EventSorcerer.csproj
 CONFIGURATION_PATH=src/deploy
-DOTNET_PUBLISH_COMMAND=dotnet publish -maxcpucount:1 --configuration Release
+DOTNET_PUBLISH_ARGS=
+DOTNET_PUBLISH_COMMAND=dotnet publish $(DOTNET_PUBLISH_ARGS) --configuration Release
 
 .DEFAULT_GOAL := build
 run:

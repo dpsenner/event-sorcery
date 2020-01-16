@@ -4,12 +4,10 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
         dotnet: [ '3.1.100' ]
-
     steps:
     - uses: actions/setup-dotnet@v1
       with:
@@ -19,7 +17,10 @@ jobs:
         fetch-depth: 0
         ref: ${{ github.ref }}
     - name: Run Makefile to build project artifacts
-      run: make --jobs 1
+      run: make DOTNET_PUBLISH_ARGS=-maxcpucount:1
+  upload-artifacts:
+    needs: build
+    if: github.ref == master
     - uses: actions/upload-artifact@v1
       with:
         name: event-sorcerer
