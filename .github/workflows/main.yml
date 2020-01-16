@@ -16,6 +16,6 @@ jobs:
         dotnet-version: ${{ matrix.dotnet }}
     - uses: actions/checkout@master
       with:
-        fetch-depth: 1
+        ref: ${{ github.ref }}
     - name: Run Makefile to build project artifacts
       run: make build
