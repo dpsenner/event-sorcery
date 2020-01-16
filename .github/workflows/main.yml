@@ -18,9 +18,9 @@ jobs:
       with:
         fetch-depth: 0
         ref: ${{ github.ref }}
+    - name: Run Makefile to build project artifacts
+      run: make build
     - uses: actions/upload-artifact@v1
       with:
         name: artifacts
         path: build
-    - name: Run Makefile to build project artifacts
-      run: make build
