@@ -9,6 +9,10 @@ jobs:
       matrix:
         dotnet: [ '3.1.100' ]
     steps:
+    - name: Dump github context
+      env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ matrix.dotnet }}
