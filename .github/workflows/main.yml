@@ -20,7 +20,7 @@ jobs:
       run: make DOTNET_PUBLISH_ARGS=-maxcpucount:1
   upload-artifacts:
     needs: build
-    if: github.ref == master
+    if: github.ref == 'master'
     - uses: actions/upload-artifact@v1
       with:
         name: event-sorcerer
