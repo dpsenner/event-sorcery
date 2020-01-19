@@ -192,6 +192,9 @@ namespace EventSorcery.Components.Measuring
                 else
                 {
                     // do not request measurements while disconnected
+                    // we have to delay in this situation at least for some
+                    // time to avoid hot looping
+                    await Task.Delay(TimeSpan.FromMilliseconds(100), cancellationToken);
                 }
 
                 // delay and wait for next cycle

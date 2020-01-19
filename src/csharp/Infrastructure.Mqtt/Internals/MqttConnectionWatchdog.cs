@@ -24,16 +24,23 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
         INotificationHandler<ConnectingFailed>,
         INotificationHandler<SubscribeRequest>,
         INotificationHandler<PublishRequest>,
-        INotificationHandler<PublishAsJsonRequest>
+        INotificationHandler<PublishAsJsonRequest>,
+        INotificationHandler<ConnectRequest>,
+        INotificationHandler<ReconnectRequest>
     {
+        protected IMediator Mediator { get; }
+
         protected IMqttClient Client { get; }
 
         protected MqttBrokerConfiguration Configuration { get; }
 
         protected bool IsShutdownRequested { get; private set; }
 
-        public MqttConnectionWatchdog(IMqttClient client, MqttBrokerConfiguration configuration)
+        protected TimeSpan ReconnectAfter { get; private set; } = TimeSpan.FromSeconds(1);
+
+        public MqttConnectionWatchdog(IMediator mediator, IMqttClient client, MqttBrokerConfiguration configuration)
         {
+            Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             Client = client ?? throw new ArgumentNullException(nameof(client));
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
@@ -112,40 +119,14 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
 
         public async Task Handle(ConnectionLost notification, CancellationToken cancellationToken)
         {
-            if (IsShutdownRequested)
-            {
-                return;
-            }
-
-            var reconnectAfter = TimeSpan.FromSeconds(1);
-            Console.WriteLine($"Connection to broker {Configuration.Host}:{Configuration.Port} lost, attempting reconnect in {reconnectAfter.TotalSeconds}s ..");
-
-            // delay reconnect
-            await Task.Delay(reconnectAfter, cancellationToken);
-
-            // attempt reconnect
-            await ConnectAsync(cancellationToken);
+            Console.WriteLine($"Connection to broker {Configuration.Host}:{Configuration.Port} lost, attempting reconnect in {ReconnectAfter.TotalSeconds}s ..");
+            await Mediator.Publish(new ReconnectRequest(), cancellationToken);
         }
 
         public async Task Handle(ConnectingFailed notification, CancellationToken cancellationToken)
         {
-            var reconnectAfter = TimeSpan.FromSeconds(1);
-            Console.WriteLine($"Connection to broker {Configuration.Host}:{Configuration.Port} failed, attempting reconnect in {reconnectAfter.TotalSeconds}s ..");
-
-            // delay reconnect
-            try
-            {
-                await Task.Delay(reconnectAfter, cancellationToken);
-            }
-            catch (TaskCanceledException)
-            {
-                // there is some chance that this task gets cancelled
-                // and in general it means that reconnect is no longer
-                // needed
-                return;
-            }
-
-            await ConnectAsync(cancellationToken);
+            Console.WriteLine($"Connection to broker {Configuration.Host}:{Configuration.Port} failed, attempting reconnect in {ReconnectAfter.TotalSeconds}s ..");
+            await Mediator.Publish(new ReconnectRequest(), cancellationToken);
         }
 
         public Task Handle(ApplicationShutdownRequested notification, CancellationToken cancellationToken)
@@ -160,6 +141,37 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
 
             var options = GetDisconnectOptions();
             return Client.DisconnectAsync(options, cancellationToken);
+        }
+
+        public Task Handle(ConnectRequest notification, CancellationToken cancellationToken)
+        {
+            if (IsShutdownRequested)
+            {
+                return Task.CompletedTask;
+            }
+
+            return ConnectAsync(cancellationToken);
+        }
+
+        public async Task Handle(ReconnectRequest notification, CancellationToken cancellationToken)
+        {
+            // delay reconnect
+            try
+            {
+                var reconnectAfter = TimeSpan.FromSeconds(1);
+                await Task.Delay(reconnectAfter, cancellationToken);
+            }
+            catch (TaskCanceledException)
+            {
+                // there is some chance that this task gets cancelled
+                // and in general it means that reconnect is no longer
+                // needed
+                return;
+            }
+
+            // pass this via the mediator to assert every other handler of the connecting failed
+            // is run before the connect request is handled
+            await Mediator.Publish(new ConnectRequest(), cancellationToken);
         }
 
         private async Task ConnectAsync(CancellationToken cancellationToken)
