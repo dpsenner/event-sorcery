@@ -122,7 +122,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                 }
 
                 var rawString = await File.ReadAllTextAsync("/proc/loadavg", Encoding.UTF8, cancellationToken);
-                var loadSplit = rawString.Split(" ").Select(x => Convert.ToDouble(x, CultureInfo.InvariantCulture)).ToList();
+                var loadSplit = rawString.Split(" ").Take(3).Select(x => Convert.ToDouble(x, CultureInfo.InvariantCulture)).ToList();
                 return new LoadAverage()
                 {
                     OneMinute = loadSplit[0],
