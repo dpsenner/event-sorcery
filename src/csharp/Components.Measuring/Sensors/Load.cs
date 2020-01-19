@@ -154,7 +154,6 @@ namespace EventSorcery.Components.Measuring.Sensors
             {
                 lock (StateLock)
                 {
-                    Console.WriteLine($"{DateTime.Now} - {State}");
                     return Task.FromResult(State);
                 }
             }
