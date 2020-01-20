@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventSorcery.Events.Measuring;
 using EventSorcery.Events.Measuring.Measurements;
+using System.Net.Sockets;
 
 namespace EventSorcery.Components.Measuring.Sensors
 {
@@ -38,58 +39,65 @@ namespace EventSorcery.Components.Measuring.Sensors
             MeasurementTimingService.ResetDue(dueItems);
         }
 
-        private async Task RunAsync(IEnumerable<PingConfiguration.HostConfiguration> items, CancellationToken cancellationToken)
+        private Task RunAsync(IEnumerable<PingConfiguration.HostConfiguration> items, CancellationToken cancellationToken)
         {
-            using (var ping = new System.Net.NetworkInformation.Ping())
+            return Task.WhenAll(items.Select(item => PingAsync(item, cancellationToken)));
+        }
+
+        private async Task PingAsync(PingConfiguration.HostConfiguration item, CancellationToken cancellationToken)
+        {
+            var timeout = (int)item.Timeout.TotalMilliseconds;
+            var hostname = item.Hostname;
+            var alias = item.Alias;
+            if (string.IsNullOrWhiteSpace(alias))
             {
-                foreach (var item in items)
+                alias = hostname;
+            }
+
+            var roundtripTime = item.Timeout;
+            var status = IPStatus.Unknown;
+            try
+            {
+                using var ping = new System.Net.NetworkInformation.Ping();
+                var pingReply = await ping.SendPingAsync(hostname, timeout);
+                status = pingReply.Status;
+                roundtripTime = TimeSpan.FromMilliseconds(pingReply.RoundtripTime);
+                if (pingReply.Status == IPStatus.TimedOut)
                 {
-                    var timeout = (int)item.Timeout.TotalMilliseconds;
-                    var hostname = item.Hostname;
-                    var alias = item.Alias;
-                    if (string.IsNullOrWhiteSpace(alias))
-                    {
-                        alias = hostname;
-                    }
-
-                    var pingReply = await ping.SendPingAsync(hostname, timeout);
-                    var roundtripTime = TimeSpan.FromMilliseconds(pingReply.RoundtripTime);
-                    if (pingReply.Status == IPStatus.TimedOut)
-                    {
-                        roundtripTime = item.Timeout;
-                    }
-
-                    await Mediator.Publish(new OutboundMeasurement()
-                    {
-                        Name = "ping",
-                        Item = new PingMeasurement()
-                        {
-                            Timestamp = DateTime.UtcNow,
-                            Source = System.Net.Dns.GetHostName(),
-                            Target = hostname,
-                            Alias = alias,
-                            Status = pingReply.Status,
-                            Timeout = item.Timeout,
-                            RoundtripTime = roundtripTime,
-                        },
-                    }, cancellationToken);
-                    await Mediator.Publish(new SensorMeasurement()
-                    {
-                        Sensor = $"ping/{alias}/status",
-                        Value = $"{pingReply.Status}",
-                    }, cancellationToken);
-                    await Mediator.Publish(new SensorMeasurement()
-                    {
-                        Sensor = $"ping/{alias}/timeout/milliseconds",
-                        Value = $"{timeout}",
-                    }, cancellationToken);
-                    await Mediator.Publish(new SensorMeasurement()
-                    {
-                        Sensor = $"ping/{alias}/rtt/milliseconds",
-                        Value = $"{pingReply.RoundtripTime}",
-                    }, cancellationToken);
+                    roundtripTime = item.Timeout;
                 }
             }
+            catch (PingException ex)
+            {
+                if (ex.InnerException is SocketException socketException)
+                {
+                    switch (socketException.SocketErrorCode)
+                    {
+                        case SocketError.HostNotFound:
+                            status = IPStatus.DestinationUnreachable;
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ping failed with {ex.GetType().Name}: {ex.Message}");
+            }
+
+            await Mediator.Publish(new OutboundMeasurement()
+            {
+                Name = "ping",
+                Item = new PingMeasurement()
+                {
+                    Timestamp = DateTime.UtcNow,
+                    Source = System.Net.Dns.GetHostName(),
+                    Target = hostname,
+                    Alias = alias,
+                    Status = status,
+                    Timeout = item.Timeout,
+                    RoundtripTime = roundtripTime,
+                },
+            }, cancellationToken);
         }
     }
 }
