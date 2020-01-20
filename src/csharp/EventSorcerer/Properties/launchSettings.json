@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "mqtt-publish-sensors": {
+    "EventSorcerer": {
       "commandName": "Project",
       "workingDirectory": "../../../src/deploy/"
     }
