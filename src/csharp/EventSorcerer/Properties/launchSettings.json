@@ -2,7 +2,8 @@
   "profiles": {
     "EventSorcerer": {
       "commandName": "Project",
-      "workingDirectory": "../../../src/deploy/"
+      "commandLineArgs": "-c src/deploy/",
+      "workingDirectory": "../../../"
     }
   }
 }
