@@ -21,5 +21,7 @@
         public NsResolveConfiguration NsResolve { get; set; } = new NsResolveConfiguration();
 
         public Dht22MeasurementConfiguration Dht22 { get; set; } = new Dht22MeasurementConfiguration();
+
+        public StateMeasurementConfiguration State { get; set; } = new StateMeasurementConfiguration();
     }
 }

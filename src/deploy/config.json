@@ -27,6 +27,9 @@
             },
             "Dht22": {
                 "InsertQuery": "INSERT INTO measuring.dht22_measurement (ts, alias, hostname, is_last_read_successful, last_read_age, last_relative_humidity, last_temperature) VALUES (:Timestamp, :Alias, :Hostname, :IsLastReadSuccessful, :LastReadAge, :LastRelativeHumidity, :LastTemperature)"
+            },
+            "State": {
+                "InsertQuery": "INSERT INTO measuring.state_measurement (ts, metric, status, status_text, comment) VALUES (:Timestamp, :Metric, :Status, :StatusText, :Comment)"
             }
         }
     },

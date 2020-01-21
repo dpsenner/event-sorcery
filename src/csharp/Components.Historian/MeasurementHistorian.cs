@@ -162,6 +162,12 @@ namespace EventSorcery.Components.Historian
                 OnMeasurementReceived("dht22", JsonConvert.DeserializeObject<Dht22Measurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
             }
 
+            if ($"{Prefix}/state".Equals(notification.Topic))
+            {
+                // parse payload
+                OnMeasurementReceived("state", JsonConvert.DeserializeObject<StateMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
+            }
+
             return Task.CompletedTask;
         }
 
@@ -247,6 +253,11 @@ namespace EventSorcery.Components.Historian
             if (measurement is Dht22Measurement dht22Measurement)
             {
                 return Handle(dht22Measurement, cancellationToken);
+            }
+
+            if (measurement is StateMeasurement stateMeasurement)
+            {
+                return Handle(stateMeasurement, cancellationToken);
             }
 
             return Task.CompletedTask;
@@ -380,6 +391,20 @@ namespace EventSorcery.Components.Historian
                     .AddParameter(nameof(measurement.LastReadAge), measurement.LastReadAge)
                     .AddParameter(nameof(measurement.LastRelativeHumidity), measurement.LastRelativeHumidity)
                     .AddParameter(nameof(measurement.LastTemperature), measurement.LastTemperature);
+            }, cancellationToken);
+        }
+
+        private Task Handle(StateMeasurement measurement, CancellationToken cancellationToken)
+        {
+            return Insert(command =>
+            {
+                command
+                    .WithCommandText(HistorianConfiguration.Npgsql.State.InsertQuery)
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Metric), measurement.Metric)
+                    .AddParameter(nameof(measurement.Status), measurement.Status)
+                    .AddParameter(nameof(measurement.StatusText), measurement.StatusText)
+                    .AddParameter(nameof(measurement.Comment), measurement.Comment);
             }, cancellationToken);
         }
 
