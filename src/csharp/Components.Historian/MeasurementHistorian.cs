@@ -168,6 +168,12 @@ namespace EventSorcery.Components.Historian
                 OnMeasurementReceived("state", JsonConvert.DeserializeObject<StateMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
             }
 
+            if ($"{Prefix}/rational-number".Equals(notification.Topic))
+            {
+                // parse payload
+                OnMeasurementReceived("rational-number", JsonConvert.DeserializeObject<RationalNumberMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
+            }
+
             return Task.CompletedTask;
         }
 
@@ -258,6 +264,11 @@ namespace EventSorcery.Components.Historian
             if (measurement is StateMeasurement stateMeasurement)
             {
                 return Handle(stateMeasurement, cancellationToken);
+            }
+
+            if (measurement is RationalNumberMeasurement rationalNumberMeasurement)
+            {
+                return Handle(rationalNumberMeasurement, cancellationToken);
             }
 
             return Task.CompletedTask;
@@ -405,6 +416,19 @@ namespace EventSorcery.Components.Historian
                     .AddParameter(nameof(measurement.Status), measurement.Status)
                     .AddParameter(nameof(measurement.StatusText), measurement.StatusText)
                     .AddParameter(nameof(measurement.Comment), measurement.Comment);
+            }, cancellationToken);
+        }
+
+        private Task Handle(RationalNumberMeasurement measurement, CancellationToken cancellationToken)
+        {
+            return Insert(command =>
+            {
+                command
+                    .WithCommandText(HistorianConfiguration.Npgsql.RationalNumber.InsertQuery)
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Metric), measurement.Metric)
+                    .AddParameter(nameof(measurement.Category), measurement.Category)
+                    .AddParameter(nameof(measurement.Value), measurement.Value);
             }, cancellationToken);
         }
 

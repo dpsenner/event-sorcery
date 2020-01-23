@@ -30,6 +30,9 @@
             },
             "State": {
                 "InsertQuery": "INSERT INTO measuring.state_measurement (ts, metric, status, status_text, comment) VALUES (:Timestamp, :Metric, :Status, :StatusText, :Comment)"
+            },
+            "RationalNumber": {
+                "InsertQuery": "INSERT INTO measuring.rational_number_measurement (ts, category, metric, value) VALUES (:Timestamp, :Category, :Metric, :Value)"
             }
         }
     },
