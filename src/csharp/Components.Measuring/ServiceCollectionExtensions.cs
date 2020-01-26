@@ -21,6 +21,7 @@ namespace EventSorcery.Components.Measuring
                 .AddConfigurationBinding<Sensors.PingConfiguration>("Sensor", "Ping")
                 .AddConfigurationBinding<Sensors.TcpPortStateConfiguration>("Sensor", "TcpPortState")
                 .AddConfigurationBinding<Sensors.UptimeConfiguration>("Sensor", "Uptime")
+                .AddConfigurationBinding<Sensors.ApcupsdSensorConfiguration>("Sensor", "apcupsd")
                 .AddComponents(Assembly.GetExecutingAssembly())
                 .AddTransient<IMeasurementTimingService>(serviceProvider => serviceProvider.GetRequiredService<MeasurementRequestGenerator>());
         }
