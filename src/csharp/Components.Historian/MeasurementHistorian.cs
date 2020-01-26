@@ -174,6 +174,12 @@ namespace EventSorcery.Components.Historian
                 OnMeasurementReceived("rational-number", JsonConvert.DeserializeObject<RationalNumberMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
             }
 
+            if ($"{Prefix}/ups-battery".Equals(notification.Topic))
+            {
+                // parse payload
+                OnMeasurementReceived("ups-battery", JsonConvert.DeserializeObject<UpsBatteryMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
+            }
+
             return Task.CompletedTask;
         }
 
@@ -269,6 +275,11 @@ namespace EventSorcery.Components.Historian
             if (measurement is RationalNumberMeasurement rationalNumberMeasurement)
             {
                 return Handle(rationalNumberMeasurement, cancellationToken);
+            }
+
+            if (measurement is UpsBatteryMeasurement upsBatteryMeasurement)
+            {
+                return Handle(upsBatteryMeasurement, cancellationToken);
             }
 
             return Task.CompletedTask;
@@ -429,6 +440,37 @@ namespace EventSorcery.Components.Historian
                     .AddParameter(nameof(measurement.Metric), measurement.Metric)
                     .AddParameter(nameof(measurement.Category), measurement.Category)
                     .AddParameter(nameof(measurement.Value), measurement.Value);
+            }, cancellationToken);
+        }
+
+        private Task Handle(UpsBatteryMeasurement measurement, CancellationToken cancellationToken)
+        {
+            return Insert(command =>
+            {
+                command
+                    .WithCommandText(HistorianConfiguration.Npgsql.UpsBattery.InsertQuery)
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Age), measurement.Age)
+                    .AddParameter(nameof(measurement.Hostname), measurement.Hostname)
+                    .AddParameter(nameof(measurement.Model), measurement.Model)
+                    .AddParameter(nameof(measurement.Alias), measurement.Alias)
+                    .AddParameter(nameof(measurement.StatusText), measurement.StatusText)
+                    .AddParameter(nameof(measurement.IsOnline), measurement.IsOnline)
+                    .AddParameter(nameof(measurement.IsOnBattery), measurement.IsOnBattery)
+                    .AddParameter(nameof(measurement.IsOnLowBattery), measurement.IsOnLowBattery)
+                    .AddParameter(nameof(measurement.IsCommunicationLost), measurement.IsCommunicationLost)
+                    .AddParameter(nameof(measurement.IsShuttingDown), measurement.IsShuttingDown)
+                    .AddParameter(nameof(measurement.IsOverload), measurement.IsOverload)
+                    .AddParameter(nameof(measurement.IsBatteryReplacementRequested), measurement.IsBatteryReplacementRequested)
+                    .AddParameter(nameof(measurement.IsBatteryMissing), measurement.IsBatteryMissing)
+                    .AddParameter(nameof(measurement.BatteryCharge), measurement.BatteryCharge)
+                    .AddParameter(nameof(measurement.TimeLeft), measurement.TimeLeft)
+                    .AddParameter(nameof(measurement.MinBatteryCharge), measurement.MinBatteryCharge)
+                    .AddParameter(nameof(measurement.MinTimeLeft), measurement.MinTimeLeft)
+                    .AddParameter(nameof(measurement.CumulativeOnBattery), measurement.CumulativeOnBattery)
+                    .AddParameter(nameof(measurement.CurrentBatteryVoltage), measurement.CurrentBatteryVoltage)
+                    .AddParameter(nameof(measurement.NominativeBatteryVoltage), measurement.NominativeBatteryVoltage)
+                    .AddParameter(nameof(measurement.ManufacturingDate), measurement.ManufacturingDate);
             }, cancellationToken);
         }
 

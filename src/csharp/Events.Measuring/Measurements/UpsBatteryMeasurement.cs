@@ -14,9 +14,6 @@ namespace EventSorcery.Events.Measuring.Measurements
 
         public string Alias { get; set; }
 
-        // CAL TRIM BOOST ONLINE ONBATT OVERLOAD LOWBATT REPLACEBATT NOBATT SLAVE SLAVEDOWN
-        // COMMLOST
-        // SHUTTING DOWN
         public string StatusText { get; set; }
         
         public bool IsOnline { get; set; }

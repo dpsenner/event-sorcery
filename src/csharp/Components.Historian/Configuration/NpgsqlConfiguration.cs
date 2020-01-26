@@ -25,5 +25,7 @@
         public StateMeasurementConfiguration State { get; set; } = new StateMeasurementConfiguration();
 
         public RationalNumberMeasurementConfiguration RationalNumber { get; set; } = new RationalNumberMeasurementConfiguration();
+
+        public UpsBatteryConfiguration UpsBattery { get; set; } = new UpsBatteryConfiguration();
     }
 }

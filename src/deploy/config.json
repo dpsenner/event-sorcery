@@ -33,6 +33,9 @@
             },
             "RationalNumber": {
                 "InsertQuery": "INSERT INTO measuring.rational_number_measurement (ts, category, metric, value) VALUES (:Timestamp, :Category, :Metric, :Value)"
+            },
+            "UpsBattery": {
+                "InsertQuery": "INSERT INTO measuring.ups_battery_measurement (ts, age, hostname, model, alias, status_text, is_online, is_on_battery, is_on_low_battery, is_communication_lost, is_shutting_down, is_overload, is_battery_replacement_requested, is_battery_missing, battery_charge, time_left, min_battery_charge, min_time_left, cumulative_on_battery, current_battery_voltage, nominative_battery_voltage, manufacturing_date) VALUES (:Timestamp, :Age, :Hostname, :Model, :Alias, :StatusText, :IsOnline, :IsOnBattery, :IsOnLowBattery, :IsCommunicationLost, :IsShuttingDown, :IsOverload, :IsBatteryReplacementRequested, :IsBatteryMissing, :BatteryCharge, :TimeLeft, :MinBatteryCharge, :MinTimeLeft, :CumulativeOnBattery, :CurrentBatteryVoltage, :NominativeBatteryVoltage, :ManufacturingDate)"
             }
         }
     },
