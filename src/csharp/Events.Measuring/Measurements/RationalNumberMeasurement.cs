@@ -10,6 +10,6 @@ namespace EventSorcery.Events.Measuring.Measurements
 
         public string Metric { get; set; }
 
-        public double Value { get; set; }
+        public double? Value { get; set; }
     }
 }
