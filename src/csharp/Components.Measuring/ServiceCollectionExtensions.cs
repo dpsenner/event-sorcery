@@ -11,6 +11,7 @@ namespace EventSorcery.Components.Measuring
         {
             return services
                 .AddConfigurationBinding<Configuration.Generic>()
+                .AddConfigurationBinding<Sensors.ApplicationSensorConfiguration>("Sensor", "Application")
                 .AddConfigurationBinding<Sensors.CpuTemperatureConfiguration>("Sensor", "CpuTemperature")
                 .AddConfigurationBinding<Sensors.Dht22SensorConfiguration>("Sensor", "Dht22")
                 .AddConfigurationBinding<Sensors.HddTemperatureConfiguration>("Sensor", "HddTemperature")
