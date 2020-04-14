@@ -69,7 +69,8 @@
             "Items": [
                 /*
                 {
-                    "Command": "/bin/wait-for-it localhost:80",
+                    "Command": "/bin/wait-for-it",
+                    "Arguments": "localhost:80",
                     "Enable": false,
                     "ScanRate": "00:00:05.000"
                 }
