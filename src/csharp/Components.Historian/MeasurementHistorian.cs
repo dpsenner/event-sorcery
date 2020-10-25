@@ -291,7 +291,7 @@ namespace EventSorcery.Components.Historian
             {
                 command
                     .WithCommandText(HistorianConfiguration.Npgsql.CpuTemperature.InsertQuery)
-                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToUniversalTime())
                     .AddParameter(nameof(measurement.Hostname), measurement.Hostname)
                     .AddParameter(nameof(measurement.Alias), measurement.Alias)
                     .AddParameter(nameof(measurement.Cpu), measurement.Cpu)
@@ -305,7 +305,7 @@ namespace EventSorcery.Components.Historian
             {
                 command
                     .WithCommandText(HistorianConfiguration.Npgsql.HddTemperature.InsertQuery)
-                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToUniversalTime())
                     .AddParameter(nameof(measurement.Hostname), measurement.Hostname)
                     .AddParameter(nameof(measurement.Alias), measurement.Alias)
                     .AddParameter(nameof(measurement.Hdd), measurement.Hdd)
@@ -319,7 +319,7 @@ namespace EventSorcery.Components.Historian
             {
                 command
                     .WithCommandText(HistorianConfiguration.Npgsql.HddUsage.InsertQuery)
-                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToUniversalTime())
                     .AddParameter(nameof(measurement.Alias), measurement.Alias)
                     .AddParameter(nameof(measurement.Hdd), measurement.Hdd)
                     .AddParameter(nameof(measurement.Hostname), measurement.Hostname)
@@ -340,7 +340,7 @@ namespace EventSorcery.Components.Historian
             {
                 command
                     .WithCommandText(HistorianConfiguration.Npgsql.Load.InsertQuery)
-                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToUniversalTime())
                     .AddParameter(nameof(measurement.Hostname), measurement.Hostname)
                     .AddParameter(nameof(measurement.LastOneMinute), measurement.LastOneMinute)
                     .AddParameter(nameof(measurement.LastFiveMinutes), measurement.LastFiveMinutes)
@@ -354,7 +354,7 @@ namespace EventSorcery.Components.Historian
             {
                 command
                     .WithCommandText(HistorianConfiguration.Npgsql.Ping.InsertQuery)
-                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToUniversalTime())
                     .AddParameter(nameof(measurement.Source), measurement.Source)
                     .AddParameter(nameof(measurement.Target), measurement.Target)
                     .AddParameter(nameof(measurement.Alias), measurement.Alias)
@@ -371,7 +371,7 @@ namespace EventSorcery.Components.Historian
             {
                 command
                     .WithCommandText(HistorianConfiguration.Npgsql.TcpPortState.InsertQuery)
-                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToUniversalTime())
                     .AddParameter(nameof(measurement.Source), measurement.Source)
                     .AddParameter(nameof(measurement.Target), measurement.Target)
                     .AddParameter(nameof(measurement.Port), measurement.Port)
@@ -389,7 +389,7 @@ namespace EventSorcery.Components.Historian
             {
                 command
                     .WithCommandText(HistorianConfiguration.Npgsql.NsResolve.InsertQuery)
-                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToUniversalTime())
                     .AddParameter(nameof(measurement.Source), measurement.Source)
                     .AddParameter(nameof(measurement.Target), measurement.Target)
                     .AddParameter(nameof(measurement.Alias), measurement.Alias)
@@ -406,7 +406,7 @@ namespace EventSorcery.Components.Historian
             {
                 command
                     .WithCommandText(HistorianConfiguration.Npgsql.Dht22.InsertQuery)
-                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToUniversalTime())
                     .AddParameter(nameof(measurement.Alias), measurement.Alias)
                     .AddParameter(nameof(measurement.Hostname), measurement.Hostname)
                     .AddParameter(nameof(measurement.IsLastReadSuccessful), measurement.IsLastReadSuccessful)
@@ -422,7 +422,7 @@ namespace EventSorcery.Components.Historian
             {
                 command
                     .WithCommandText(HistorianConfiguration.Npgsql.State.InsertQuery)
-                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToUniversalTime())
                     .AddParameter(nameof(measurement.Metric), measurement.Metric)
                     .AddParameter(nameof(measurement.Status), measurement.Status)
                     .AddParameter(nameof(measurement.StatusText), measurement.StatusText)
@@ -436,7 +436,7 @@ namespace EventSorcery.Components.Historian
             {
                 command
                     .WithCommandText(HistorianConfiguration.Npgsql.RationalNumber.InsertQuery)
-                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToUniversalTime())
                     .AddParameter(nameof(measurement.Metric), measurement.Metric)
                     .AddParameter(nameof(measurement.Category), measurement.Category)
                     .AddParameter(nameof(measurement.Value), measurement.Value);
@@ -449,7 +449,7 @@ namespace EventSorcery.Components.Historian
             {
                 command
                     .WithCommandText(HistorianConfiguration.Npgsql.UpsBattery.InsertQuery)
-                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToLocalTime())
+                    .AddParameter(nameof(measurement.Timestamp), measurement.Timestamp.ToUniversalTime())
                     .AddParameter(nameof(measurement.Age), measurement.Age)
                     .AddParameter(nameof(measurement.Hostname), measurement.Hostname)
                     .AddParameter(nameof(measurement.Model), measurement.Model)

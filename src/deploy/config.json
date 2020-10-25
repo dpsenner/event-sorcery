@@ -3,7 +3,7 @@
     "Historian": {
         "Npgsql": {
             "Enable": false,
-            "ConnectionString": "Server=localhost;Port=5432;Database=;User Id=;Password=",
+            "ConnectionString": "Server=localhost;Port=5432;Database=;User Id=;Password=;Timezone=UTC",
             "CpuTemperature": {
                 "InsertQuery": "INSERT INTO measuring.cpu_temperature_measurement (ts, alias, cpu, hostname, temperature) VALUES (:Timestamp, :Alias, :Cpu, :Hostname, :Temperature)"
             },
