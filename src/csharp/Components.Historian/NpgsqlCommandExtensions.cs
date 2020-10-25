@@ -22,7 +22,7 @@ namespace EventSorcery.Components.Historian
         }
 
         public static NpgsqlCommand AddParameter<T>(this NpgsqlCommand command, string name, T value)
-		where T : struct
+            where T : struct
         {
             var parameter = command.CreateParameter();
             parameter.ParameterName = name;
@@ -33,11 +33,11 @@ namespace EventSorcery.Components.Historian
         }
 
         public static NpgsqlCommand AddParameter<T>(this NpgsqlCommand command, string name, T? value)
-		where T : struct
+            where T : struct
         {
             var parameter = command.CreateParameter();
             parameter.ParameterName = name;
-	    if (value.HasValue)
+            if (value.HasValue)
             {
                 parameter.Value = value;
             }
