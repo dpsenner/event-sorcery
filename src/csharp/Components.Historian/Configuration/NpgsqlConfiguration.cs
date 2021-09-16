@@ -27,5 +27,7 @@
         public RationalNumberMeasurementConfiguration RationalNumber { get; set; } = new RationalNumberMeasurementConfiguration();
 
         public UpsBatteryConfiguration UpsBattery { get; set; } = new UpsBatteryConfiguration();
+
+        public GenericJsonConfiguration GenericJson { get; set; } = new GenericJsonConfiguration();
     }
 }

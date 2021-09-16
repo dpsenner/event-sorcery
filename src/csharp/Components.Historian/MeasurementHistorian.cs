@@ -12,6 +12,7 @@ using EventSorcery.Events.Measuring;
 using EventSorcery.Events.Measuring.Measurements;
 using EventSorcery.Events.Mqtt;
 using EventSorcery.Infrastructure.DependencyInjection;
+using System.Linq;
 
 namespace EventSorcery.Components.Historian
 {
@@ -43,18 +44,27 @@ namespace EventSorcery.Components.Historian
             Measurements = new ConcurrentQueue<IMeasurement>();
         }
 
-        public Task Handle(ConnectionEstablished notification, CancellationToken cancellationToken)
+        public async Task Handle(ConnectionEstablished notification, CancellationToken cancellationToken)
         {
             if (!HistorianConfiguration.Npgsql.Enable)
             {
-                return Task.CompletedTask;
+                return;
             }
 
-            return Mediator.Publish(new SubscribeRequest()
+            await Mediator.Publish(new SubscribeRequest()
             {
                 Qos = MeasurementsConfiguration.Qos,
                 Topic = $"{Prefix}/+",
             }, cancellationToken);
+
+            foreach (var topic in HistorianConfiguration.Npgsql.GenericJson.Items.SelectMany(t => t.Topics))
+            {
+                await Mediator.Publish(new SubscribeRequest()
+                {
+                    Qos = MeasurementsConfiguration.Qos,
+                    Topic = topic,
+                }, cancellationToken);
+            }
         }
 
         public Task Handle(ApplicationStartCompleted notification, CancellationToken cancellationToken)
@@ -77,12 +87,6 @@ namespace EventSorcery.Components.Historian
         public Task Handle(ApplicationShutdownCompleted notification, CancellationToken cancellationToken)
         {
             CancellationTokenSource.Dispose();
-            return Task.CompletedTask;
-        }
-
-        public Task Handle(InboundMeasurement notification, CancellationToken cancellationToken)
-        {
-            Measurements.Enqueue(notification.Item);
             return Task.CompletedTask;
         }
 
@@ -180,6 +184,27 @@ namespace EventSorcery.Components.Historian
                 OnMeasurementReceived("ups-battery", JsonConvert.DeserializeObject<UpsBatteryMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
             }
 
+            foreach (var genericJsonEventConfigurationItem in HistorianConfiguration.Npgsql.GenericJson.Items)
+            {
+                bool isTopicMatch = genericJsonEventConfigurationItem.Topics.Any(topicPattern => topicPattern.IsTopicMatch(notification.Topic));
+                if (isTopicMatch)
+                {
+                    var measurement = new GenericJsonMeasurement()
+                    {
+                        QueryString = genericJsonEventConfigurationItem.QueryString,
+                        Topic = notification.Topic,
+                        Payload = Encoding.UTF8.GetString(notification.Payload),
+                    };
+                    OnMeasurementReceived("generic-json", measurement, cancellationToken);
+                }
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public Task Handle(InboundMeasurement notification, CancellationToken cancellationToken)
+        {
+            Measurements.Enqueue(notification.Item);
             return Task.CompletedTask;
         }
 
@@ -280,6 +305,11 @@ namespace EventSorcery.Components.Historian
             if (measurement is UpsBatteryMeasurement upsBatteryMeasurement)
             {
                 return Handle(upsBatteryMeasurement, cancellationToken);
+            }
+
+            if (measurement is GenericJsonMeasurement genericJsonMeasurement)
+            {
+                return Handle(genericJsonMeasurement, cancellationToken);
             }
 
             return Task.CompletedTask;
@@ -471,6 +501,16 @@ namespace EventSorcery.Components.Historian
                     .AddParameter(nameof(measurement.CurrentBatteryVoltage), measurement.CurrentBatteryVoltage)
                     .AddParameter(nameof(measurement.NominativeBatteryVoltage), measurement.NominativeBatteryVoltage)
                     .AddParameter(nameof(measurement.ManufacturingDate), measurement.ManufacturingDate);
+            }, cancellationToken);
+        }
+
+        private Task Handle(GenericJsonMeasurement measurement, CancellationToken cancellationToken)
+        {
+            return Insert(command =>
+            {
+                command.WithCommandText(measurement.QueryString)
+                    .AddParameter(nameof(measurement.Topic), measurement.Topic)
+                    .AddParameter(nameof(measurement.Payload), measurement.Payload);
             }, cancellationToken);
         }
 

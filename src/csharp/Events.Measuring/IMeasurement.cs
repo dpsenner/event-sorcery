@@ -8,6 +8,5 @@ namespace EventSorcery.Events.Measuring
     /// </summary>
     public interface IMeasurement
     {
-        DateTime Timestamp { get; set; }
     }
 }
