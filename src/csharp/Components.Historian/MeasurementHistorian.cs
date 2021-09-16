@@ -317,6 +317,11 @@ namespace EventSorcery.Components.Historian
 
         private Task Handle(CpuTemperatureMeasurement measurement, CancellationToken cancellationToken)
         {
+            if (!HistorianConfiguration.Npgsql.CpuTemperature.Enable)
+            {
+                return Task.CompletedTask;
+            }
+
             return Insert(command =>
             {
                 command
@@ -331,6 +336,11 @@ namespace EventSorcery.Components.Historian
 
         private Task Handle(HddTemperatureMeasurement measurement, CancellationToken cancellationToken)
         {
+            if (!HistorianConfiguration.Npgsql.HddTemperature.Enable)
+            {
+                return Task.CompletedTask;
+            }
+
             return Insert(command =>
             {
                 command
@@ -345,6 +355,11 @@ namespace EventSorcery.Components.Historian
 
         private Task Handle(HddUsageMeasurement measurement, CancellationToken cancellationToken)
         {
+            if (!HistorianConfiguration.Npgsql.HddUsage.Enable)
+            {
+                return Task.CompletedTask;
+            }
+
             return Insert(command =>
             {
                 command
@@ -366,6 +381,11 @@ namespace EventSorcery.Components.Historian
 
         private Task Handle(LoadMeasurement measurement, CancellationToken cancellationToken)
         {
+            if (!HistorianConfiguration.Npgsql.Load.Enable)
+            {
+                return Task.CompletedTask;
+            }
+
             return Insert(command =>
             {
                 command
@@ -380,6 +400,11 @@ namespace EventSorcery.Components.Historian
 
         private Task Handle(PingMeasurement measurement, CancellationToken cancellationToken)
         {
+            if (!HistorianConfiguration.Npgsql.Ping.Enable)
+            {
+                return Task.CompletedTask;
+            }
+
             return Insert(command =>
             {
                 command
@@ -397,6 +422,11 @@ namespace EventSorcery.Components.Historian
 
         private Task Handle(TcpPortStateMeasurement measurement, CancellationToken cancellationToken)
         {
+            if (!HistorianConfiguration.Npgsql.TcpPortState.Enable)
+            {
+                return Task.CompletedTask;
+            }
+
             return Insert(command =>
             {
                 command
@@ -415,6 +445,11 @@ namespace EventSorcery.Components.Historian
 
         private Task Handle(NsResolveMeasurement measurement, CancellationToken cancellationToken)
         {
+            if (!HistorianConfiguration.Npgsql.NsResolve.Enable)
+            {
+                return Task.CompletedTask;
+            }
+
             return Insert(command =>
             {
                 command
@@ -432,6 +467,11 @@ namespace EventSorcery.Components.Historian
 
         private Task Handle(Dht22Measurement measurement, CancellationToken cancellationToken)
         {
+            if (!HistorianConfiguration.Npgsql.Dht22.Enable)
+            {
+                return Task.CompletedTask;
+            }
+
             return Insert(command =>
             {
                 command
@@ -448,6 +488,11 @@ namespace EventSorcery.Components.Historian
 
         private Task Handle(StateMeasurement measurement, CancellationToken cancellationToken)
         {
+            if (!HistorianConfiguration.Npgsql.State.Enable)
+            {
+                return Task.CompletedTask;
+            }
+
             return Insert(command =>
             {
                 command
@@ -462,6 +507,11 @@ namespace EventSorcery.Components.Historian
 
         private Task Handle(RationalNumberMeasurement measurement, CancellationToken cancellationToken)
         {
+            if (!HistorianConfiguration.Npgsql.RationalNumber.Enable)
+            {
+                return Task.CompletedTask;
+            }
+
             return Insert(command =>
             {
                 command
@@ -475,6 +525,11 @@ namespace EventSorcery.Components.Historian
 
         private Task Handle(UpsBatteryMeasurement measurement, CancellationToken cancellationToken)
         {
+            if (!HistorianConfiguration.Npgsql.UpsBattery.Enable)
+            {
+                return Task.CompletedTask;
+            }
+
             return Insert(command =>
             {
                 command
@@ -506,6 +561,11 @@ namespace EventSorcery.Components.Historian
 
         private Task Handle(GenericJsonMeasurement measurement, CancellationToken cancellationToken)
         {
+            if (!HistorianConfiguration.Npgsql.GenericJson.Enable)
+            {
+                return Task.CompletedTask;
+            }
+
             return Insert(command =>
             {
                 command.WithCommandText(measurement.QueryString)

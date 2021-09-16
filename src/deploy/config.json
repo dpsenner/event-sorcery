@@ -5,40 +5,53 @@
             "Enable": false,
             "ConnectionString": "Server=localhost;Port=5432;Database=;User Id=;Password=;Timezone=UTC",
             "CpuTemperature": {
+                "Enable": false,
                 "InsertQuery": "INSERT INTO measuring.cpu_temperature_measurement (ts, alias, cpu, hostname, temperature) VALUES (:Timestamp, :Alias, :Cpu, :Hostname, :Temperature)"
             },
             "HddTemperature": {
+                "Enable": false,
                 "InsertQuery": "INSERT INTO measuring.hdd_temperature_measurement (ts, alias, hdd, hostname, temperature) VALUES (:Timestamp, :Alias, :Hdd, :Hostname, :Temperature)"
             },
             "HddUsage": {
+                "Enable": false,
                 "InsertQuery": "INSERT INTO measuring.hdd_usage_measurement (ts, alias, hdd, hostname, available, used, total) VALUES (:Timestamp, :Alias, :Hdd, :Hostname, :Available, :Used, :Total)"
             },
             "Load": {
+                "Enable": false,
                 "InsertQuery": "INSERT INTO measuring.load_measurement (ts, hostname, last_1_minute, last_5_minutes, last_15_minutes) VALUES (:Timestamp, :Hostname, :LastOneMinute, :LastFiveMinutes, :LastFifteenMinutes)"
             },
             "Ping": {
+                "Enable": false,
                 "InsertQuery": "INSERT INTO measuring.ping_measurement (ts, source, target, alias, status, status_as_text, timeout_seconds, rtt_seconds) VALUES (:Timestamp, :Source, :Target, :Alias, :Status, :StatusAsText, :Timeout, :RoundtripTime)"
             },
             "TcpPortState": {
+                "Enable": false,
                 "InsertQuery": "INSERT INTO measuring.tcp_port_state_measurement (ts, source, target, port, alias, status, status_as_text, timeout_seconds, after_seconds) VALUES (:Timestamp, :Source, :Target, :Port, :Alias, :Status, :StatusAsText, :Timeout, :After)"
             },
             "NsResolve": {
+                "Enable": false,
                 "InsertQuery": "INSERT INTO measuring.ns_resolve_measurement (ts, source, target, alias, status, status_as_text, timeout_seconds, after_seconds) VALUES (:Timestamp, :Source, :Target, :Alias, :Status, :StatusAsText, :Timeout, :After)"
             },
             "Dht22": {
+                "Enable": false,
                 "InsertQuery": "INSERT INTO measuring.dht22_measurement (ts, alias, hostname, is_last_read_successful, last_read_age, last_relative_humidity, last_temperature) VALUES (:Timestamp, :Alias, :Hostname, :IsLastReadSuccessful, :LastReadAge, :LastRelativeHumidity, :LastTemperature)"
             },
             "State": {
+                "Enable": false,
                 "InsertQuery": "INSERT INTO measuring.state_measurement (ts, metric, status, status_text, comment) VALUES (:Timestamp, :Metric, :Status, :StatusText, :Comment)"
             },
             "RationalNumber": {
+                "Enable": false,
                 "InsertQuery": "INSERT INTO measuring.rational_number_measurement (ts, category, metric, value) VALUES (:Timestamp, :Category, :Metric, :Value)"
             },
             "UpsBattery": {
+                "Enable": false,
                 "InsertQuery": "INSERT INTO measuring.ups_battery_measurement (ts, age, hostname, model, alias, status_text, is_online, is_on_battery, is_on_low_battery, is_communication_lost, is_shutting_down, is_overload, is_battery_replacement_requested, is_battery_missing, battery_charge, time_left, min_battery_charge, min_time_left, cumulative_on_battery, current_battery_voltage, nominative_battery_voltage, manufacturing_date) VALUES (:Timestamp, :Age, :Hostname, :Model, :Alias, :StatusText, :IsOnline, :IsOnBattery, :IsOnLowBattery, :IsCommunicationLost, :IsShuttingDown, :IsOverload, :IsBatteryReplacementRequested, :IsBatteryMissing, :BatteryCharge, :TimeLeft, :MinBatteryCharge, :MinTimeLeft, :CumulativeOnBattery, :CurrentBatteryVoltage, :NominativeBatteryVoltage, :ManufacturingDate)"
             },
             "GenericJson": {
-                "Items": [
+                "Enable": false,
+                "Items": [                    
+                    /*
                     {
                         "Topics": [
                             "event/generic/json",
@@ -47,6 +60,7 @@
                         ],
                         "QueryString": "select measuring.f_store_generic_json_measurement(:Topic, :Payload)"
                     }
+                    */
                 ]
             }
         }
