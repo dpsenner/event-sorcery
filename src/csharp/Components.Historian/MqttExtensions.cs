@@ -8,20 +8,22 @@ namespace EventSorcery.Components.Historian
     {
         public static bool IsTopicMatch(this string topicPattern, string topic)
         {
+            var multiWildcard = "#";
+            var wildcard = "+";
             var patternFragments = topicPattern.Split('/');
             var topicFragments = topic.Split('/');
 
             for (int i = 0; i < patternFragments.Length; i++)
             {
                 string patternFragment = patternFragments[i];
-                if (patternFragment == "+")
-                {
-                    // single level wildcard, accept
-                }
-                else if (patternFragment == "#")
+                if (multiWildcard.Equals(patternFragment))
                 {
                     // multi level wildcard, accept
                     return true;
+                }
+                else if (wildcard.Equals(patternFragment))
+                {
+                    // single level wildcard, accept
                 }
                 else
                 {
@@ -39,6 +41,17 @@ namespace EventSorcery.Components.Historian
                     {
                         // topic has not enough fragments
                         return false;
+                    }
+
+                    // if at the last element of pattern and still items left in topic
+                    // this is no match; there are more fragments in the topic than in
+                    // the pattern
+                    if (i + 1 == patternFragments.Length)
+                    {
+                        if (topicFragments.Length > patternFragments.Length)
+                        {
+                            return false;
+                        }
                     }
                 }
             }
