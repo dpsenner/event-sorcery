@@ -53,14 +53,12 @@ namespace EventSorcery.Components.Measuring
 
         public Task Handle(ConnectionEstablished notification, CancellationToken cancellationToken)
         {
-            Console.WriteLine($"Measurement request generator was notified that the connection was established ..");
             IsConnected = true;
             return Task.CompletedTask;
         }
 
         public Task Handle(ConnectionLost notification, CancellationToken cancellationToken)
         {
-            Console.WriteLine($"Measurement request generator was notified that the connection was lost ..");
             IsConnected = false;
             return Task.CompletedTask;
         }
@@ -83,7 +81,7 @@ namespace EventSorcery.Components.Measuring
             // discard publish if not connected
             if (!IsConnected)
             {
-                Console.WriteLine($"WARN: not connected, discarding sensor measurement of sensor '{notification.Sensor}' ..");
+                Console.WriteLine($"Not connected, discarding sensor measurement of sensor '{notification.Sensor}' ..");
                 return Task.CompletedTask;
             }
 
@@ -101,7 +99,7 @@ namespace EventSorcery.Components.Measuring
             // discard publish if not connected
             if (!IsConnected)
             {
-                Console.WriteLine($"WARN: not connected, discarding outbound measurement named '{notification.Name}' ..");
+                Console.WriteLine($"Not connected, discarding outbound measurement named '{notification.Name}' ..");
                 return Task.CompletedTask;
             }
 
