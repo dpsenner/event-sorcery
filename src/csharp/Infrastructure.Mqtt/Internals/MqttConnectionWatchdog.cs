@@ -109,12 +109,20 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
             }
         }
 
-        public Task Handle(SubscribeRequest notification, CancellationToken cancellationToken)
+        public async Task Handle(SubscribeRequest notification, CancellationToken cancellationToken)
         {
+            Console.WriteLine($"Attempting to subscribe to topic {notification.Topic} with QOS {notification.Qos} ..");
             var options = new MqttClientSubscribeOptionsBuilder()
                 .WithTopicFilter(notification.Topic, notification.Qos.ToQualityOfService())
                 .Build();
-            return Client.SubscribeAsync(options, cancellationToken);
+            var subscribeResult = await Client.SubscribeAsync(options, cancellationToken);
+            if (subscribeResult.Items != null)
+            {
+                foreach (var subscribeResultItem in subscribeResult.Items)
+                {
+                    Console.WriteLine($"The attempt to subscribe to topic {notification.Topic} with QOS {notification.Qos} completed with result code {subscribeResultItem.ResultCode} ..");
+                }
+            }
         }
 
         public async Task Handle(ConnectionLost notification, CancellationToken cancellationToken)
