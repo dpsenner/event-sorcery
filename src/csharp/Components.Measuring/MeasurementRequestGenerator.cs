@@ -189,34 +189,34 @@ namespace EventSorcery.Components.Measuring
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (IsConnected)
+                try
                 {
-                    // collect due items
-                    var dueItems = LastMeasurement
-                        .Where(t => IsDue(t.Key))
-                        .Select(t => t.Key)
-                        .ToList();
-                    if (dueItems.Any())
+                    if (IsConnected)
                     {
-                        await OnIsDue(dueItems, cancellationToken);
+                        // collect due items
+                        var dueItems = LastMeasurement
+                            .Where(t => IsDue(t.Key))
+                            .Select(t => t.Key)
+                            .ToList();
+                        if (dueItems.Any())
+                        {
+                            await OnIsDue(dueItems, cancellationToken);
+                        }
+                        else
+                        {
+                            // no items due
+                        }
                     }
                     else
                     {
-                        // no items due
+                        // do not request measurements while disconnected
+                        // we have to delay in this situation at least for some
+                        // time to avoid hot looping
+                        Console.WriteLine($"Not connected, delaying new measurements for one second ..");
+                        await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                     }
-                }
-                else
-                {
-                    // do not request measurements while disconnected
-                    // we have to delay in this situation at least for some
-                    // time to avoid hot looping
-                    Console.WriteLine($"WARN: not connected, delaying new measurements for one second ..");
-                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
-                }
 
-                // delay and wait for next cycle
-                try
-                {
+                    // delay and wait for next cycle
                     var nextDueTimes = LastMeasurement
                         .Select(t => t.Key.ScanRate - t.Value.Elapsed)
                         .Distinct()
@@ -249,6 +249,10 @@ namespace EventSorcery.Components.Measuring
                 catch (TaskCanceledException)
                 {
                     // ignore
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Measurement request generator caught exception and resumes operation: {ex}");
                 }
             }
         }
