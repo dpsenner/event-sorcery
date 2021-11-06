@@ -53,12 +53,14 @@ namespace EventSorcery.Components.Measuring
 
         public Task Handle(ConnectionEstablished notification, CancellationToken cancellationToken)
         {
+            Console.WriteLine($"Measurement request generator was notified that the connection was established ..");
             IsConnected = true;
             return Task.CompletedTask;
         }
 
         public Task Handle(ConnectionLost notification, CancellationToken cancellationToken)
         {
+            Console.WriteLine($"Measurement request generator was notified that the connection was lost ..");
             IsConnected = false;
             return Task.CompletedTask;
         }
@@ -78,6 +80,13 @@ namespace EventSorcery.Components.Measuring
 
         public Task Handle(SensorMeasurement notification, CancellationToken cancellationToken)
         {
+            // discard publish if not connected
+            if (!IsConnected)
+            {
+                Console.WriteLine($"WARN: not connected, discarding sensor measurement of sensor '{notification.Sensor}' ..");
+                return Task.CompletedTask;
+            }
+
             return Mediator.Publish(new PublishRequest()
             {
                 Topic = $"{Generic.TopicPrefix}/{notification.Sensor}",
@@ -89,6 +98,13 @@ namespace EventSorcery.Components.Measuring
 
         public Task Handle(OutboundMeasurement notification, CancellationToken cancellationToken)
         {
+            // discard publish if not connected
+            if (!IsConnected)
+            {
+                Console.WriteLine($"WARN: not connected, discarding outbound measurement named '{notification.Name}' ..");
+                return Task.CompletedTask;
+            }
+
             return Mediator.Publish(new PublishAsJsonRequest()
             {
                 Topic = $"event/measurement/{notification.Name}",
@@ -194,7 +210,8 @@ namespace EventSorcery.Components.Measuring
                     // do not request measurements while disconnected
                     // we have to delay in this situation at least for some
                     // time to avoid hot looping
-                    await Task.Delay(TimeSpan.FromMilliseconds(100), cancellationToken);
+                    Console.WriteLine($"WARN: not connected, delaying new measurements for one second ..");
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                 }
 
                 // delay and wait for next cycle
