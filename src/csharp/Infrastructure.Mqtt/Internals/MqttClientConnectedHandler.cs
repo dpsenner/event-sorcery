@@ -21,12 +21,12 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
 
         public Task HandleConnectedAsync(MqttClientConnectedEventArgs eventArgs)
         {
-            if (eventArgs.AuthenticateResult.ResultCode != MqttClientConnectResultCode.Success)
+            if (eventArgs.ConnectResult.ResultCode != MqttClientConnectResultCode.Success)
             {
-                Console.WriteLine($"Could not connect to {Configuration.Host}:{Configuration.Port} (reason: {eventArgs.AuthenticateResult.ResultCode}) ..");
+                Console.WriteLine($"Could not connect to {Configuration.Host}:{Configuration.Port} (reason: {eventArgs.ConnectResult.ResultCode}) ..");
                 return Mediator.Publish(new ConnectingFailed()
                 {
-                    Reason = eventArgs.AuthenticateResult.ReasonString,
+                    Reason = eventArgs.ConnectResult.ReasonString,
                 });
             }
             else
@@ -34,7 +34,7 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
                 Console.WriteLine($"Connected to {Configuration.Host}:{Configuration.Port} ..");
                 return Mediator.Publish(new ConnectionEstablished()
                 {
-                    IsSessionPresent = eventArgs.AuthenticateResult.IsSessionPresent,
+                    IsSessionPresent = eventArgs.ConnectResult.IsSessionPresent,
                 });
             }
         }
