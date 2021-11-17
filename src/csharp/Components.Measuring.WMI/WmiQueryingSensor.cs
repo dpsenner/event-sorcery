@@ -11,8 +11,7 @@ using EventSorcery.Events.Application;
 using EventSorcery.Events.Mqtt;
 using EventSorcery.Infrastructure.DependencyInjection;
 using MediatR;
-using Microsoft.Management.Infrastructure;
-using Microsoft.Management.Infrastructure.Options;
+using ORMi;
 
 namespace EventSorcery.Components.Measuring.Sensors.WMI
 {
@@ -58,19 +57,8 @@ namespace EventSorcery.Components.Measuring.Sensors.WMI
 
         private async Task ProcessItem(WmiQueryItemConfiguration item, CancellationToken cancellationToken)
         {
-            using var password = new SecureString();
-            foreach (char c in item.Password)
-            {
-                password.AppendChar(c);
-            }
-
-            var credentials = new CimCredential(PasswordAuthenticationMechanism.Default, item.Domain, item.Username, password);
-
-            using var sessionOptions = new WSManSessionOptions();
-            sessionOptions.AddDestinationCredentials(credentials);
-
-            using var session = CimSession.Create(item.Hostname, sessionOptions);
-            var cimInstances = session.QueryInstances(item.Namespace, "WQL", item.Query);
+            var wmiHelper = new WMIHelper(item.Namespace, item.Hostname, item.Username, item.Password);
+            var cimInstances = wmiHelper.Query(item.Query);
 
             var payload = new Payload()
             {
@@ -84,11 +72,12 @@ namespace EventSorcery.Components.Measuring.Sensors.WMI
             foreach (var cimInstance in cimInstances)
             {
                 var instance = new Dictionary<string,object>();
-                foreach (var property in cimInstance.CimInstanceProperties)
+                foreach (var property in cimInstance)
                 {
-                    if (IsMatchingProperty(properties, property))
+                    var propertyName = property.Key;
+                    if (IsMatchingProperty(properties, propertyName))
                     {
-                        instance[property.Name] = property.Value;
+                        instance[propertyName] = property.Value;
                     }
                 }
 
@@ -117,14 +106,14 @@ namespace EventSorcery.Components.Measuring.Sensors.WMI
             return fieldsSplit.Select(field => field.Trim()).ToList();
         }
 
-        private bool IsMatchingProperty(List<string> properties, CimProperty property)
+        private bool IsMatchingProperty(List<string> properties, string propertyName)
         {
             if (properties.Count == 1 && string.Equals("*", properties[0].Trim()))
             {
                 return true;
             }
 
-            if (properties.Any(t => t.Equals(property.Name, StringComparison.InvariantCultureIgnoreCase)))
+            if (properties.Any(t => t.Equals(propertyName, StringComparison.InvariantCultureIgnoreCase)))
             {
                 return true;
             }

@@ -2,6 +2,7 @@
 using EventSorcery.Infrastructure.Configuration;
 using EventSorcery.Infrastructure.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using ORMi.Interfaces;
 
 namespace EventSorcery.Components.Measuring.Sensors.WMI
 {
