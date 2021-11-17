@@ -2,6 +2,7 @@
 using EventSorcery.Infrastructure.Configuration;
 using EventSorcery.Infrastructure.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using EventSorcery.Components.Measuring.Sensors.WMI;
 
 namespace EventSorcery.Components.Measuring
 {
@@ -24,7 +25,8 @@ namespace EventSorcery.Components.Measuring
                 .AddConfigurationBinding<Sensors.UptimeConfiguration>("Sensor", "Uptime")
                 .AddConfigurationBinding<Sensors.ApcupsdSensorConfiguration>("Sensor", "apcupsd")
                 .AddComponents(Assembly.GetExecutingAssembly())
-                .AddTransient<IMeasurementTimingService>(serviceProvider => serviceProvider.GetRequiredService<MeasurementRequestGenerator>());
+                .AddTransient<IMeasurementTimingService>(serviceProvider => serviceProvider.GetRequiredService<MeasurementRequestGenerator>())
+                .AddSensorsWmi();
         }
     }
 }

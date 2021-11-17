@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EventSorcery.Components.Measuring
 {
-    internal interface IMeasurementTimingService
+    public interface IMeasurementTimingService
     {
         void Register<T>(T item, Func<T, CancellationToken, Task> isDueCallback)
             where T : ISensorScanRateItem;

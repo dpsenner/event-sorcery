@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventSorcery.Events.Application;
 
-namespace EventSorcery.Components.Measuring.Sensors
+namespace EventSorcery.Components.Measuring
 {
-    internal abstract class ASensor : ISingletonComponent,
+    public abstract class ASensor : ISingletonComponent,
         INotificationHandler<ApplicationStartRequested>,
         INotificationHandler<ApplicationShutdownRequested>,
         INotificationHandler<ApplicationShutdownCompleted>

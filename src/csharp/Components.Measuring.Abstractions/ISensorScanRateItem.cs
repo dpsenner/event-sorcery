@@ -2,7 +2,7 @@ using System;
 
 namespace EventSorcery.Components.Measuring
 {
-    internal interface ISensorScanRateItem
+    public interface ISensorScanRateItem
     {
         TimeSpan ScanRate { get; }
     }

@@ -1,6 +1,6 @@
 ﻿namespace EventSorcery.Components.Measuring.Configuration
 {
-    internal class Generic
+    public class Generic
     {
         public string TopicPrefix { get; set; }
 

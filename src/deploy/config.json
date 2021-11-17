@@ -86,6 +86,23 @@
         }
     },
     "Sensor": {
+		"WmiQuery": {
+			"Enable": false,
+            "ScanRate": "00:01:00.000",
+			"Items": [
+				/*
+				{
+					"Topic": "wmi/server/printserver/print_queue",
+					"Domain": "comp.ropetrans.int",
+					"Hostname": "printserver",
+					"Username": "username",
+					"Password": "password",
+					"Namespace": "root\\cimv2",
+					"Query": "SELECT Name,JobErrors,JobsSpooling,MaxJobsSpooling,OutofPaperErrors,TotalJobsPrinted,TotalPagesPrinted FROM Win32_PerfFormattedData_Spooler_PrintQueue"
+				}
+				*/
+			]
+		},
         "apcupsd": {
             "Enable": false,
             "Alias": "UPS",

@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Components.Measuring", "Com
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Components.Historian", "Components.Historian\Components.Historian.csproj", "{30A11FCB-903D-4E8E-823A-48EF6DA37ACB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Components.Measuring.Sensors.WMI", "Components.Measuring.WMI\Components.Measuring.Sensors.WMI.csproj", "{BF6AAB86-7348-421C-BC5C-680CE97DBFBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Components.Measuring.Abstractions", "Components.Measuring.Abstractions\Components.Measuring.Abstractions.csproj", "{722384A2-C0F6-4EF3-BBE0-873FB59B01FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,14 @@ Global
 		{30A11FCB-903D-4E8E-823A-48EF6DA37ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30A11FCB-903D-4E8E-823A-48EF6DA37ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30A11FCB-903D-4E8E-823A-48EF6DA37ACB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF6AAB86-7348-421C-BC5C-680CE97DBFBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF6AAB86-7348-421C-BC5C-680CE97DBFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF6AAB86-7348-421C-BC5C-680CE97DBFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF6AAB86-7348-421C-BC5C-680CE97DBFBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{722384A2-C0F6-4EF3-BBE0-873FB59B01FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{722384A2-C0F6-4EF3-BBE0-873FB59B01FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{722384A2-C0F6-4EF3-BBE0-873FB59B01FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{722384A2-C0F6-4EF3-BBE0-873FB59B01FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

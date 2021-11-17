@@ -2,12 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <RootNamespace>EventSorcery.Components.Measuring</RootNamespace>
-    <AssemblyName>EventSorcery.Components.Measuring</AssemblyName>
-    <Authors>dpsenner@gmail.com</Authors>
-    <Product>Event Sorcery</Product>
-    <Copyright>2019</Copyright>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RootNamespace>EventSorcery.Components.Measuring.Sensors.WMI</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,18 +17,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Include="System.Device.Gpio" Version="1.5.0" />
-    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Management.Infrastructure" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Components.Measuring.Abstractions\Components.Measuring.Abstractions.csproj" />
-    <ProjectReference Include="..\Components.Measuring.WMI\Components.Measuring.Sensors.WMI.csproj" />
     <ProjectReference Include="..\Events.Application\Events.Application.csproj" />
-    <ProjectReference Include="..\Events.Measuring\Events.Measuring.csproj" />
-    <ProjectReference Include="..\Events.Mqtt\Events.Mqtt.csproj" />
     <ProjectReference Include="..\Infrastructure.Configuration\Infrastructure.Configuration.csproj" />
     <ProjectReference Include="..\Infrastructure.DependencyInjection\Infrastructure.DependencyInjection.csproj" />
   </ItemGroup>
