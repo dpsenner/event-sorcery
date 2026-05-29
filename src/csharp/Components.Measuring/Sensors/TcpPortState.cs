@@ -13,6 +13,8 @@ namespace EventSorcery.Components.Measuring.Sensors
 {
     internal class TcpPortState : ASensor
     {
+        private static readonly string Hostname = System.Net.Dns.GetHostName();
+
         protected IMediator Mediator { get; }
 
         protected TcpPortStateConfiguration Configuration { get; }
@@ -97,7 +99,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                     Item = new TcpPortStateMeasurement()
                     {
                         Timestamp = DateTime.UtcNow,
-                        Source = System.Net.Dns.GetHostName(),
+                        Source = Hostname,
                         Target = hostname,
                         Port = port,
                         Alias = alias,

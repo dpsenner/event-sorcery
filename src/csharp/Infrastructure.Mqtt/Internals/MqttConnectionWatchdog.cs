@@ -1,4 +1,4 @@
-using EventSorcery.Events.Application;
+﻿using EventSorcery.Events.Application;
 using EventSorcery.Events.Mqtt;
 using EventSorcery.Infrastructure.DependencyInjection;
 using MediatR;
@@ -34,6 +34,14 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
 
         protected MqttBrokerConfiguration Configuration { get; }
 
+        private static readonly string Hostname = Dns.GetHostName();
+
+        private static readonly Newtonsoft.Json.JsonSerializerSettings JsonSettings = new Newtonsoft.Json.JsonSerializerSettings()
+        {
+            Formatting = Newtonsoft.Json.Formatting.Indented,
+            Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() },
+        };
+
         protected bool IsShutdownRequested { get; private set; }
 
         protected TimeSpan ReconnectAfter { get; private set; } = TimeSpan.FromSeconds(1);
@@ -60,7 +68,7 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
 
             var topic = notification
                 .Topic
-                .Replace("$(hostname)", Dns.GetHostName());
+                .Replace("$(hostname)", Hostname);
             var message = new MqttApplicationMessageBuilder()
                 .WithTopic(topic)
                 .WithQualityOfServiceLevel(notification.Qos.ToQualityOfService())
@@ -82,19 +90,10 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
 
             var topic = notification
                 .Topic
-                .Replace("$(hostname)", Dns.GetHostName());
+                .Replace("$(hostname)", Hostname);
             try
             {
-                var settings = new Newtonsoft.Json.JsonSerializerSettings()
-                {
-                    Formatting = Newtonsoft.Json.Formatting.Indented,
-                    // ContractResolver = new OrderedContractResolver(),
-                    Converters =
-                    {
-                        new Newtonsoft.Json.Converters.StringEnumConverter()
-                    },
-                };
-                var payload = Newtonsoft.Json.JsonConvert.SerializeObject(notification.Payload, settings);
+                var payload = Newtonsoft.Json.JsonConvert.SerializeObject(notification.Payload, JsonSettings);
                 var message = new MqttApplicationMessageBuilder()
                     .WithTopic(topic)
                     .WithQualityOfServiceLevel(notification.Qos.ToQualityOfService())
@@ -253,31 +252,5 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
             }
         }
 
-        private class OrderedContractResolver : Newtonsoft.Json.Serialization.DefaultContractResolver
-        {
-            protected override System.Collections.Generic.IList<Newtonsoft.Json.Serialization.JsonProperty> CreateProperties(System.Type type, Newtonsoft.Json.MemberSerialization memberSerialization)
-            {
-                return base
-                    .CreateProperties(type, memberSerialization)
-                    .OrderBy(ByType)
-                    .ThenBy(p => p.PropertyName)
-                    .ToList();
-            }
-
-            private int ByType(Newtonsoft.Json.Serialization.JsonProperty property)
-            {
-                if (typeof(string).Equals(property.PropertyType))
-                {
-                    return 0;
-                }
-
-                if (typeof(System.Collections.IEnumerable).IsAssignableFrom(property.PropertyType))
-                {
-                    return 1;
-                }
-
-                return 0;
-            }
-        }
     }
 }

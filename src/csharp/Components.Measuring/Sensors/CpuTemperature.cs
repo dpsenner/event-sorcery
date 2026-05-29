@@ -14,6 +14,8 @@ namespace EventSorcery.Components.Measuring.Sensors
 {
     internal class CpuTemperature : ASensor
     {
+        private static readonly string Hostname = System.Net.Dns.GetHostName();
+
         protected IMediator Mediator { get; }
 
         protected CpuTemperatureConfiguration Configuration { get; }
@@ -47,7 +49,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                     Item = new CpuTemperatureMeasurement()
                     {
                         Timestamp = DateTime.UtcNow,
-                        Hostname = System.Net.Dns.GetHostName(),
+                        Hostname = Hostname,
                         Cpu = path,
                         Alias = alias,
                         Temperature = temperatureRaw,

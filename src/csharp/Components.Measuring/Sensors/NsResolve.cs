@@ -12,6 +12,8 @@ namespace EventSorcery.Components.Measuring.Sensors
 {
     internal class NsResolve : ASensor
     {
+        private static readonly string Hostname = System.Net.Dns.GetHostName();
+
         protected IMediator Mediator { get; }
 
         protected NsResolveConfiguration Configuration { get; }
@@ -90,7 +92,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                 Item = new NsResolveMeasurement()
                 {
                     Timestamp = DateTime.UtcNow,
-                    Source = System.Net.Dns.GetHostName(),
+                    Source = Hostname,
                     Target = hostname,
                     Alias = alias,
                     Status = status,

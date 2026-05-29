@@ -15,6 +15,8 @@ namespace EventSorcery.Components.Measuring.Sensors
 {
     internal class HddUsage : ASensor
     {
+        private static readonly string Hostname = System.Net.Dns.GetHostName();
+
         protected IMediator Mediator { get; }
 
         protected HddUsageConfiguration Configuration { get; }
@@ -62,7 +64,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                     Item = new HddUsageMeasurement()
                     {
                         Timestamp = DateTime.UtcNow,
-                        Hostname = System.Net.Dns.GetHostName(),
+                        Hostname = Hostname,
                         Hdd = path,
                         Alias = alias,
                         Total = bytesTotal,

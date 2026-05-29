@@ -9,6 +9,8 @@ namespace EventSorcery.Components.Measuring.Sensors
 {
     internal class Heartbeat : ASensor
     {
+        private static readonly string Hostname = System.Net.Dns.GetHostName();
+        
         protected IMediator Mediator { get; }
 
         protected HeartbeatConfiguration Configuration { get; }
@@ -42,7 +44,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                 Item = new HeartbeatMeasurement()
                 {
                     Timestamp = DateTime.UtcNow,
-                    Hostname = System.Net.Dns.GetHostName(),
+                    Hostname = Hostname,
                 },
             });
             await Mediator.Publish(new SensorMeasurement()

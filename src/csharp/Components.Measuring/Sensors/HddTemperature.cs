@@ -15,6 +15,8 @@ namespace EventSorcery.Components.Measuring.Sensors
 {
     internal class HddTemperature : ASensor
     {
+        private static readonly string Hostname = System.Net.Dns.GetHostName();
+
         protected IMediator Mediator { get; }
 
         protected HddTemperatureConfiguration Configuration { get; }
@@ -61,7 +63,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                     Item = new HddTemperatureMeasurement()
                     {
                         Timestamp = DateTime.UtcNow,
-                        Hostname = System.Net.Dns.GetHostName(),
+                        Hostname = Hostname,
                         Hdd = path,
                         Alias = alias,
                         Temperature = temperatureRaw,
