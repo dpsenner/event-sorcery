@@ -16,6 +16,8 @@ namespace EventSorcery.Components.Measuring.Sensors
 {
     internal class ApcupsdSensor : ASensor
     {
+        private static readonly string Hostname = System.Net.Dns.GetHostName();
+
         protected IMediator Mediator { get; }
 
         protected ApcupsdSensorConfiguration Configuration { get; }
@@ -70,7 +72,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                 {
                     Timestamp = DateTime.UtcNow,
                     Alias = configuration.Alias,
-                    Hostname = System.Net.Dns.GetHostName(),
+                    Hostname = Hostname,
                 };
                 while (!process.HasExited)
                 {
