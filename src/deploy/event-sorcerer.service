@@ -7,6 +7,10 @@ WorkingDirectory=/etc/event-sorcerer
 ExecStart=/usr/local/bin/event-sorcerer
 KillSignal=SIGINT
 Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=event-sorcerer
 
 [Install]
 WantedBy=multi-user.target
