@@ -15,32 +15,38 @@ clean:
 	# clean
 	test ! -d $(OUTPUT_DIR) || rm -rf $(OUTPUT_DIR)
 	-rm -rf src/csharp/*/bin/ src/csharp/*/obj/
-build: build-portable build-linux-x64 build-linux-arm build-deploy
+build: build-portable build-linux-x64 build-linux-arm build-linux-arm64 build-deploy
 build-deploy:
 	# build-deploy
-	test ! -f $(OUTPUT_DIR)/deploy || rm -rf $(OUTPUT_DIR)/deploy
+	test ! -d $(OUTPUT_DIR)/deploy || rm -rf $(OUTPUT_DIR)/deploy
 	mkdir -p $(OUTPUT_DIR)/deploy
 	cp -r src/deploy $(OUTPUT_DIR)
 	-rm $(OUTPUT_DIR)/deploy/conf.d/*.json
 build-portable:
 	# build-portable
-	test ! -f $(OUTPUT_DIR)/portable || rm -rf $(OUTPUT_DIR)/portable
+	test ! -d $(OUTPUT_DIR)/portable || rm -rf $(OUTPUT_DIR)/portable
 	$(DOTNET_PUBLISH_COMMAND) --output $(OUTPUT_DIR)/portable $(CSPROJ_FILE)
 	chmod -R -x,+X $(OUTPUT_DIR)/portable/*
 	cp src/deploy/event-sorcerer.sh $(OUTPUT_DIR)/portable/EventSorcerer
 	chmod +x $(OUTPUT_DIR)/portable/EventSorcerer
 build-linux-x64:
 	# build-linux-x64
-	test ! -f $(OUTPUT_DIR)/linux-x64 || rm -rf $(OUTPUT_DIR)/linux-x64
+	test ! -d $(OUTPUT_DIR)/linux-x64 || rm -rf $(OUTPUT_DIR)/linux-x64
 	$(DOTNET_PUBLISH_COMMAND) --self-contained --runtime linux-x64 --output $(OUTPUT_DIR)/linux-x64 $(CSPROJ_FILE)
 	chmod -R -x,+X $(OUTPUT_DIR)/linux-x64/*
 	chmod +x $(OUTPUT_DIR)/linux-x64/EventSorcerer
 build-linux-arm:
 	# build-linux-arm
-	test ! -f $(OUTPUT_DIR)/linux-arm || rm -rf $(OUTPUT_DIR)/linux-arm
+	test ! -d $(OUTPUT_DIR)/linux-arm || rm -rf $(OUTPUT_DIR)/linux-arm
 	$(DOTNET_PUBLISH_COMMAND) --self-contained --runtime linux-arm --output $(OUTPUT_DIR)/linux-arm $(CSPROJ_FILE)
 	chmod -R -x,+X $(OUTPUT_DIR)/linux-arm/*
 	chmod +x $(OUTPUT_DIR)/linux-arm/EventSorcerer
+build-linux-arm64:
+	# build-linux-arm64
+	test ! -d $(OUTPUT_DIR)/linux-arm64 || rm -rf $(OUTPUT_DIR)/linux-arm64
+	$(DOTNET_PUBLISH_COMMAND) --self-contained --runtime linux-arm64 --output $(OUTPUT_DIR)/linux-arm64 $(CSPROJ_FILE)
+	chmod -R -x,+X $(OUTPUT_DIR)/linux-arm64/*
+	chmod +x $(OUTPUT_DIR)/linux-arm64/EventSorcerer
 
 deploy-install:
 	# deploy-install
