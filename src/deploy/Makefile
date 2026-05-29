@@ -11,7 +11,7 @@ install-bin:
 	# force remove existing binaries
 	-rm -rf /var/opt/$(APP_NAME)
 	mkdir -p /var/opt/$(APP_NAME)
-	cp -rl ../$(ARCH)/ /var/opt/$(APP_NAME)/
+	cp -r ../$(ARCH)/ /var/opt/$(APP_NAME)/
 	# symlink executable
 	ln -sf /var/opt/$(APP_NAME)/$(ARCH)/EventSorcerer /usr/local/bin/event-sorcerer
 install-systemd-unit:
