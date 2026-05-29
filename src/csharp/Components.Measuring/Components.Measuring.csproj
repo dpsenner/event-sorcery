@@ -29,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Components.Measuring.WMI\Components.Measuring.WMI.csproj" />
     <ProjectReference Include="..\Events.Application\Events.Application.csproj" />
     <ProjectReference Include="..\Events.Measuring\Events.Measuring.csproj" />
     <ProjectReference Include="..\Events.Mqtt\Events.Mqtt.csproj" />
