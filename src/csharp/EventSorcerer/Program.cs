@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using MediatR.NotificationPublishers;
 using Microsoft.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using EventSorcery.Events.Application;
@@ -54,7 +56,7 @@ namespace EventSorcery.EventSorcerer
             try
             {
                 var serviceCollection = new ServiceCollection()
-                    .AddSingleton(sp => new CustomMediator(new ServiceFactory(t => sp.GetRequiredService(t)), ParallelWhenAll))
+                    .AddSingleton<CustomMediator>()
                     .AddTransient<IMediator>(sp => sp.GetRequiredService<CustomMediator>())
                     .AddConfigurationPath(configurationPath)
                     .AddConfiguration(arguments)
@@ -103,30 +105,12 @@ namespace EventSorcery.EventSorcerer
 
         private class CustomMediator : Mediator
         {
-            private Func<IEnumerable<Func<INotification, CancellationToken, Task>>, INotification, CancellationToken, Task> _publish;
+            public CustomMediator(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
-            public CustomMediator(ServiceFactory serviceFactory, Func<IEnumerable<Func<INotification, CancellationToken, Task>>, INotification, CancellationToken, Task> publish)
-                : base(serviceFactory)
+            protected override Task PublishCore(IEnumerable<NotificationHandlerExecutor> allHandlers, INotification notification, CancellationToken cancellationToken)
             {
-                _publish = publish;
-            }
-
-            protected override Task PublishCore(IEnumerable<Func<INotification, CancellationToken, Task>> allHandlers, INotification notification, CancellationToken cancellationToken)
-            {
-                return _publish(allHandlers, notification, cancellationToken);
-            }
-        }
-
-        private static Task ParallelWhenAll(IEnumerable<Func<INotification, CancellationToken, Task>> handlers, INotification notification, CancellationToken cancellationToken)
-        {
-            var tasks = new List<Task>();
-
-            foreach (var handler in handlers)
-            {
-                tasks.Add(handler(notification, cancellationToken));
-            }
-
-            return Task.WhenAll(tasks);
+                return Task.WhenAll(allHandlers.Select(h => h.HandlerCallback(notification, cancellationToken)));
         }
     }
+}
 }

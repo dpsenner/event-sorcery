@@ -1,6 +1,8 @@
 APP_NAME=event-sorcerer
 
-install: install-etc install-bin install-systemd-unit
+install: install-user install-etc install-bin install-systemd-unit
+install-user:
+	id -u $(APP_NAME) &>/dev/null || useradd --system --no-create-home --shell /usr/sbin/nologin $(APP_NAME)
 install-etc:
 	mkdir -p /etc/$(APP_NAME)/conf.d
 	cp config.json /etc/$(APP_NAME)/config.json
