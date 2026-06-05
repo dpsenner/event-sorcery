@@ -1,13 +1,13 @@
 ﻿using EventSorcery.Events.Mqtt;
 using EventSorcery.Infrastructure.DependencyInjection;
 using MediatR;
-using MQTTnet.Client.Disconnecting;
+using MQTTnet;
 using System;
 using System.Threading.Tasks;
 
 namespace EventSorcery.Infrastructure.Mqtt.Internals
 {
-    internal class MqttClientDisconnectedHandler : IMqttClientDisconnectedHandler, ISingletonComponent
+    internal class MqttClientDisconnectedHandler : ISingletonComponent
     {
         protected IMediator Mediator { get; }
 
@@ -22,7 +22,7 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
             {
                 return Mediator.Publish(new ConnectingFailed()
                 {
-                    Reason = eventArgs.Exception.Message,
+                    Reason = eventArgs.Exception?.Message,
                 });
             }
             else

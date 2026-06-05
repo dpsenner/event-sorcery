@@ -41,6 +41,12 @@ namespace EventSorcery.Components.Measuring.Sensors
 
         protected async Task OnIsDue(UptimeConfiguration configuration, CancellationToken cancellationToken)
         {
+            if (Environment.OSVersion.Platform != PlatformID.Unix)
+            {
+                MeasurementTimingService.ResetDue(configuration);
+                return;
+            }
+
             string uptimeRaw = await File.ReadAllTextAsync("/proc/uptime", Encoding.UTF8, cancellationToken);
             string uptimeSecondsString = uptimeRaw.Split(' ')[0];
             decimal uptimeSeconds = decimal.Parse(uptimeSecondsString, CultureInfo.InvariantCulture);

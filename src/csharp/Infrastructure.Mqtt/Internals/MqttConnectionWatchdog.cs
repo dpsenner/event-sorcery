@@ -1,12 +1,8 @@
-﻿using EventSorcery.Events.Application;
+using EventSorcery.Events.Application;
 using EventSorcery.Events.Mqtt;
 using EventSorcery.Infrastructure.DependencyInjection;
 using MediatR;
 using MQTTnet;
-using MQTTnet.Client;
-using MQTTnet.Client.Disconnecting;
-using MQTTnet.Client.Options;
-using MQTTnet.Client.Subscribing;
 using MQTTnet.Formatter;
 using System;
 using System.Linq;
@@ -195,7 +191,7 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
             }
         }
 
-        private IMqttClientOptions GetConnectOptions()
+        private MqttClientOptions GetConnectOptions()
         {
             var builder = new MqttClientOptionsBuilder()
                 .WithTcpServer(Configuration.Host, Configuration.Port)
@@ -223,10 +219,9 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
 
             if (Configuration.Ssl.Enable)
             {
-                builder.WithTls(parameters =>
+                builder.WithTlsOptions(new MqttClientTlsOptions
                 {
-                    parameters.UseTls = true;
-                    parameters.AllowUntrustedCertificates = Configuration.Ssl.AllowUntrustedCertificates;
+                    AllowUntrustedCertificates = Configuration.Ssl.AllowUntrustedCertificates,
                 });
             }
 
@@ -240,11 +235,11 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
             {
                 case MqttProtocolVersion.V310:
                 case MqttProtocolVersion.V311:
-                    return null;
+                    return new MqttClientDisconnectOptions();
                 case MqttProtocolVersion.V500:
                     return new MqttClientDisconnectOptions()
                     {
-                        ReasonCode = MqttClientDisconnectReason.NormalDisconnection,
+                        Reason = MqttClientDisconnectOptionsReason.NormalDisconnection,
                         ReasonString = "Shutdown",
                     };
                 default:
