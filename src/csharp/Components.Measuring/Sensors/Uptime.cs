@@ -12,6 +12,8 @@ namespace EventSorcery.Components.Measuring.Sensors
 {
     internal class Uptime : ASensor
     {
+        private static readonly string Hostname = System.Net.Dns.GetHostName();
+
         protected IMediator Mediator { get; }
 
         protected UptimeConfiguration Configuration { get; }
@@ -39,6 +41,12 @@ namespace EventSorcery.Components.Measuring.Sensors
 
         protected async Task OnIsDue(UptimeConfiguration configuration, CancellationToken cancellationToken)
         {
+            if (Environment.OSVersion.Platform != PlatformID.Unix)
+            {
+                MeasurementTimingService.ResetDue(configuration);
+                return;
+            }
+
             string uptimeRaw = await File.ReadAllTextAsync("/proc/uptime", Encoding.UTF8, cancellationToken);
             string uptimeSecondsString = uptimeRaw.Split(' ')[0];
             decimal uptimeSeconds = decimal.Parse(uptimeSecondsString, CultureInfo.InvariantCulture);
@@ -50,7 +58,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                 Item = new UptimeMeasurement()
                 {
                     Timestamp = DateTime.UtcNow,
-                    Hostname = System.Net.Dns.GetHostName(),
+                    Hostname = Hostname,
                     Since = DateTime.UtcNow - uptimeTimeSpan,
                     Total = uptimeTimeSpan,
                     TotalHumanReadable = uptime,

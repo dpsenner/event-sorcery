@@ -1,11 +1,8 @@
 ﻿using EventSorcery.Infrastructure.Configuration;
 using EventSorcery.Infrastructure.DependencyInjection;
+using EventSorcery.Infrastructure.Mqtt.Internals;
 using Microsoft.Extensions.DependencyInjection;
 using MQTTnet;
-using MQTTnet.Client;
-using MQTTnet.Client.Connecting;
-using MQTTnet.Client.Disconnecting;
-using MQTTnet.Client.Receiving;
 using System.Reflection;
 
 namespace EventSorcery.Infrastructure.Mqtt
@@ -16,18 +13,21 @@ namespace EventSorcery.Infrastructure.Mqtt
         {
             return serviceCollection
                 .AddComponents(Assembly.GetExecutingAssembly())
-                .AddConfigurationBinding<Internals.MqttBrokerConfiguration>((serviceProvider, t) =>
+                .AddConfigurationBinding<MqttBrokerConfiguration>((serviceProvider, t) =>
                 {
                     if (cleanSession.HasValue)
                     {
                         t.Session.Clean = cleanSession.Value;
                     }
                 }, "Mqtt")
-                .AddSingleton(sp => new MqttFactory()
-                    .CreateMqttClient()
-                    .UseConnectedHandler(sp.GetRequiredService<IMqttClientConnectedHandler>())
-                    .UseDisconnectedHandler(sp.GetRequiredService<IMqttClientDisconnectedHandler>())
-                    .UseApplicationMessageReceivedHandler(sp.GetRequiredService<IMqttApplicationMessageReceivedHandler>()));
+                .AddSingleton<IMqttClient>(sp =>
+                {
+                    var client = new MqttClientFactory().CreateMqttClient();
+                    client.ConnectedAsync += sp.GetRequiredService<MqttClientConnectedHandler>().HandleConnectedAsync;
+                    client.DisconnectedAsync += sp.GetRequiredService<MqttClientDisconnectedHandler>().HandleDisconnectedAsync;
+                    client.ApplicationMessageReceivedAsync += sp.GetRequiredService<MqttApplicationMessageReceivedHandler>().HandleApplicationMessageReceivedAsync;
+                    return client;
+                });
         }
     }
 }

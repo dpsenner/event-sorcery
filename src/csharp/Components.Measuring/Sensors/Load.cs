@@ -15,6 +15,8 @@ namespace EventSorcery.Components.Measuring.Sensors
 {
     internal class Load : ASensor
     {
+        private static readonly string Hostname = System.Net.Dns.GetHostName();
+
         protected IMediator Mediator { get; }
 
         protected LoadConfiguration Configuration { get; }
@@ -93,7 +95,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                 Item = new LoadMeasurement()
                 {
                     Timestamp = DateTime.UtcNow,
-                    Hostname = System.Net.Dns.GetHostName(),
+                    Hostname = Hostname,
                     LastOneMinute = loadAverage.OneMinute,
                     LastFiveMinutes = loadAverage.FiveMinutes,
                     LastFifteenMinutes = loadAverage.FifteenMinutes,

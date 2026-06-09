@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>EventSorcery.Events.Application</RootNamespace>
     <AssemblyName>EventSorcery.Events.Application</AssemblyName>
     <Authors>dpsenner@gmail.com</Authors>
@@ -22,7 +22,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="MediatR" Version="12.4.0" />
   </ItemGroup>
 
 </Project>

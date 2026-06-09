@@ -2,13 +2,13 @@
 using EventSorcery.Infrastructure.DependencyInjection;
 using MediatR;
 using MQTTnet;
-using MQTTnet.Client.Receiving;
 using System;
+using System.Buffers;
 using System.Threading.Tasks;
 
 namespace EventSorcery.Infrastructure.Mqtt.Internals
 {
-    internal class MqttApplicationMessageReceivedHandler : IMqttApplicationMessageReceivedHandler, ISingletonComponent
+    internal class MqttApplicationMessageReceivedHandler : ISingletonComponent
     {
         protected IMediator Mediator { get; }
 
@@ -25,7 +25,7 @@ namespace EventSorcery.Infrastructure.Mqtt.Internals
                 IsRetained = eventArgs.ApplicationMessage.Retain,
                 Qos = eventArgs.ApplicationMessage.QualityOfServiceLevel.ToQualityOfService(),
                 ContentType = eventArgs.ApplicationMessage.ContentType,
-                Payload = eventArgs.ApplicationMessage.Payload,
+                Payload = eventArgs.ApplicationMessage.Payload.ToArray(),
             });
         }
     }

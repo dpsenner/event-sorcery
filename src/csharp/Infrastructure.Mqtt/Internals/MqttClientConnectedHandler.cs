@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using EventSorcery.Events.Mqtt;
 using EventSorcery.Infrastructure.DependencyInjection;
 using MediatR;
-using MQTTnet.Client.Connecting;
+using MQTTnet;
 
 namespace EventSorcery.Infrastructure.Mqtt.Internals
 {
-    internal class MqttClientConnectedHandler : IMqttClientConnectedHandler, ISingletonComponent
+    internal class MqttClientConnectedHandler : ISingletonComponent
     {
         protected IMediator Mediator { get; }
 

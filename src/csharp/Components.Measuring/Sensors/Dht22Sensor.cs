@@ -13,6 +13,8 @@ namespace EventSorcery.Components.Measuring.Sensors
 {
     internal class Dht22Sensor : ASensor
     {
+        private static readonly string Hostname = System.Net.Dns.GetHostName();
+
         protected IMediator Mediator { get; }
 
         protected Dht22SensorConfiguration Configuration { get; }
@@ -84,7 +86,7 @@ namespace EventSorcery.Components.Measuring.Sensors
                         Item = new Dht22Measurement()
                         {
                             Timestamp = DateTime.UtcNow,
-                            Hostname = System.Net.Dns.GetHostName(),
+                            Hostname = Hostname,
                             Alias = alias,
                             IsLastReadSuccessful = isLastReadSuccessful,
                             LastTemperature = lastTemperature,

@@ -30,7 +30,13 @@ namespace EventSorcery.Components.Historian
 
         protected MeasurementsConfiguration MeasurementsConfiguration { get; }
 
-        protected static string Prefix = "event/measurement";
+        private const string Prefix = "event/measurement";
+
+        private static readonly Newtonsoft.Json.JsonSerializerSettings JsonSettings = new Newtonsoft.Json.JsonSerializerSettings()
+        {
+            Formatting = Newtonsoft.Json.Formatting.Indented,
+            Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() },
+        };
 
         protected ConcurrentQueue<IMeasurement> Measurements { get; }
 
@@ -97,92 +103,46 @@ namespace EventSorcery.Components.Historian
                 return Task.CompletedTask;
             }
 
-            var settings = new JsonSerializerSettings()
-            {
-                Formatting = Formatting.Indented,
-                Converters =
-                {
-                    new Newtonsoft.Json.Converters.StringEnumConverter()
-                },
-            };
+            var json = Encoding.UTF8.GetString(notification.Payload);
 
             if ($"{Prefix}/cpu-temperature".Equals(notification.Topic))
-            {
-                // parse ping payload
-                OnMeasurementReceived("cpu-temperature", JsonConvert.DeserializeObject<CpuTemperatureMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("cpu-temperature", JsonConvert.DeserializeObject<CpuTemperatureMeasurement>(json, JsonSettings), cancellationToken);
 
             if ($"{Prefix}/hdd-temperature".Equals(notification.Topic))
-            {
-                // parse ping payload
-                OnMeasurementReceived("hdd-temperature", JsonConvert.DeserializeObject<HddTemperatureMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("hdd-temperature", JsonConvert.DeserializeObject<HddTemperatureMeasurement>(json, JsonSettings), cancellationToken);
 
             if ($"{Prefix}/hdd-usage".Equals(notification.Topic))
-            {
-                // parse ping payload
-                OnMeasurementReceived("hdd-usage", JsonConvert.DeserializeObject<HddUsageMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("hdd-usage", JsonConvert.DeserializeObject<HddUsageMeasurement>(json, JsonSettings), cancellationToken);
 
             if ($"{Prefix}/heartbeat".Equals(notification.Topic))
-            {
-                // parse ping payload
-                OnMeasurementReceived("heartbeat", JsonConvert.DeserializeObject<HeartbeatMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("heartbeat", JsonConvert.DeserializeObject<HeartbeatMeasurement>(json, JsonSettings), cancellationToken);
 
             if ($"{Prefix}/load".Equals(notification.Topic))
-            {
-                // parse ping payload
-                OnMeasurementReceived("load", JsonConvert.DeserializeObject<LoadMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("load", JsonConvert.DeserializeObject<LoadMeasurement>(json, JsonSettings), cancellationToken);
 
             if ($"{Prefix}/ping".Equals(notification.Topic))
-            {
-                // parse ping payload
-                OnMeasurementReceived("ping", JsonConvert.DeserializeObject<PingMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("ping", JsonConvert.DeserializeObject<PingMeasurement>(json, JsonSettings), cancellationToken);
 
             if ($"{Prefix}/tcp-port-state".Equals(notification.Topic))
-            {
-                // parse ping payload
-                OnMeasurementReceived("tcp-port-state", JsonConvert.DeserializeObject<TcpPortStateMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("tcp-port-state", JsonConvert.DeserializeObject<TcpPortStateMeasurement>(json, JsonSettings), cancellationToken);
 
             if ($"{Prefix}/uptime".Equals(notification.Topic))
-            {
-                // parse ping payload
-                OnMeasurementReceived("uptime", JsonConvert.DeserializeObject<UptimeMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("uptime", JsonConvert.DeserializeObject<UptimeMeasurement>(json, JsonSettings), cancellationToken);
 
             if ($"{Prefix}/ns-resolve".Equals(notification.Topic))
-            {
-                // parse ping payload
-                OnMeasurementReceived("ns-resolve", JsonConvert.DeserializeObject<NsResolveMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("ns-resolve", JsonConvert.DeserializeObject<NsResolveMeasurement>(json, JsonSettings), cancellationToken);
 
             if ($"{Prefix}/dht22".Equals(notification.Topic))
-            {
-                // parse ping payload
-                OnMeasurementReceived("dht22", JsonConvert.DeserializeObject<Dht22Measurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("dht22", JsonConvert.DeserializeObject<Dht22Measurement>(json, JsonSettings), cancellationToken);
 
             if ($"{Prefix}/state".Equals(notification.Topic))
-            {
-                // parse payload
-                OnMeasurementReceived("state", JsonConvert.DeserializeObject<StateMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("state", JsonConvert.DeserializeObject<StateMeasurement>(json, JsonSettings), cancellationToken);
 
             if ($"{Prefix}/rational-number".Equals(notification.Topic))
-            {
-                // parse payload
-                OnMeasurementReceived("rational-number", JsonConvert.DeserializeObject<RationalNumberMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("rational-number", JsonConvert.DeserializeObject<RationalNumberMeasurement>(json, JsonSettings), cancellationToken);
 
             if ($"{Prefix}/ups-battery".Equals(notification.Topic))
-            {
-                // parse payload
-                OnMeasurementReceived("ups-battery", JsonConvert.DeserializeObject<UpsBatteryMeasurement>(Encoding.UTF8.GetString(notification.Payload), settings), cancellationToken);
-            }
+                OnMeasurementReceived("ups-battery", JsonConvert.DeserializeObject<UpsBatteryMeasurement>(json, JsonSettings), cancellationToken);
 
             foreach (var genericJsonEventConfigurationItem in HistorianConfiguration.Npgsql.GenericJson.Items)
             {

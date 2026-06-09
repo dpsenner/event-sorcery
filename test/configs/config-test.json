@@ -1,0 +1,51 @@
+{
+    "TopicPrefix": "$(hostname)/sensor",
+    "Historian": {
+        "Npgsql": {
+            "Enable": true,
+            "ConnectionString": "Server=localhost;Port=5432;Database=event_sorcerer_test;User Id=event_sorcerer_test;Password=test1234;Timezone=UTC",
+            "Load": {
+                "Enable": true,
+                "InsertQuery": "INSERT INTO measuring.load_measurement (ts, hostname, last_1_minute, last_5_minutes, last_15_minutes) VALUES (:Timestamp, :Hostname, :LastOneMinute, :LastFiveMinutes, :LastFifteenMinutes)"
+            },
+            "CpuTemperature": { "Enable": false },
+            "HddTemperature": { "Enable": false },
+            "HddUsage": { "Enable": false },
+            "Ping": { "Enable": false },
+            "TcpPortState": { "Enable": false },
+            "NsResolve": { "Enable": false },
+            "Dht22": { "Enable": false },
+            "State": { "Enable": false },
+            "RationalNumber": { "Enable": false },
+            "UpsBattery": { "Enable": false },
+            "GenericJson": { "Enable": false, "Items": [] }
+        }
+    },
+    "Measurements": {
+        "Qos": "AtMostOnce"
+    },
+    "Mqtt": {
+        "Host": "localhost",
+        "Port": 1883,
+        "Session": {
+            "ClientId": "event-sorcerer-test",
+            "Clean": true
+        },
+        "Ssl": { "Enable": false },
+        "Auth": { "Enable": false }
+    },
+    "Sensor": {
+        "Heartbeat": {
+            "Enable": true,
+            "ScanRate": "00:00:02.000"
+        },
+        "Load": {
+            "Enable": true,
+            "ScanRate": "00:00:05.000"
+        },
+        "Uptime": {
+            "Enable": true,
+            "ScanRate": "00:00:10.000"
+        }
+    }
+}
